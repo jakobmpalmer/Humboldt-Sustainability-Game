@@ -3,22 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GreenCard : MonoBehaviour
+[CreateAssetMenu(fileName = "New Card", menuName = "Green Card")]
+public class GreenCard : ScriptableObject
 {
-    public int thisSize;
-    private GameObject thisCard;
+    public string cardName;
+    public int cardType; // 0 = green, 1 == blue
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        thisCard = this.gameObject;
-        RectTransform rt = thisCard.GetComponent<RectTransform>();//.Set(0,0);
-        rt.sizeDelta = new Vector3(120,120,0);
+    public int price;
+    public string description;
+
+
+    public void Print(){ 
+        Debug.Log(cardName + " costs $" + price);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 }
