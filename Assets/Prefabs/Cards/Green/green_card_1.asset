@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62b6fb33216fd3c46b381e7e8efacae0, type: 3}
+  m_Name: green_card_1
+  m_EditorClassIdentifier: 
+  cardName: Composting Food Waste 1:1 with sawmill waste.
+  cardType: 0
+  price: 8900000
+  description: '72, 000 Tons: 12,000 no landfill, 35,000 no burning, 25,000 into
+    soil. $123/tons C02'

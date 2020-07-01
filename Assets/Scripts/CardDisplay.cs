@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GreenCardDisplay : MonoBehaviour
+public class CardDisplay : MonoBehaviour
 {
 
     public GreenCard card;
-    public int cardType;
+    private int cardType;
     public Text nameText;
     public Text descriptionText;
     public Text priceText;
@@ -19,7 +19,7 @@ public class GreenCardDisplay : MonoBehaviour
         descriptionText.text = card.description;
         priceText.text = card.price.ToString();
         cardType = card.cardType;
-
+        
         switch (cardType)
         {
             case 1: // if a is an integer
@@ -27,8 +27,12 @@ public class GreenCardDisplay : MonoBehaviour
                     Debug.Log("Card is blue!");
                     break;
             case 2: // if a is a string
-                    GetComponent<Image>().color = Color.red;
-                    Debug.Log("Card is Red!");
+                    GetComponent<Image>().color = Color.yellow;
+                    Debug.Log("Card is yellow!");
+                    break;
+            case 3: // if a is a string
+                    GetComponent<Image>().color = new Color(255.0f, 171.0f, 69.0f, 10.0f);
+                    Debug.Log("Card is orange!");
                     break;
             case 0:
                     GetComponent<Image>().color = Color.green;
