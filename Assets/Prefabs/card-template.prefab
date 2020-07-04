@@ -248,7 +248,9 @@ GameObject:
   - component: {fileID: 8268886168060420618}
   - component: {fileID: 4064405167377686271}
   - component: {fileID: -410925609283367364}
-  - component: {fileID: -3981354306021289000}
+  - component: {fileID: -7831685314460218803}
+  - component: {fileID: 2707141892097093097}
+  - component: {fileID: 8660342541609832535}
   m_Layer: 5
   m_Name: card-template
   m_TagString: Untagged
@@ -331,7 +333,32 @@ MonoBehaviour:
   nameText: {fileID: 0}
   descriptionText: {fileID: 0}
   priceText: {fileID: 0}
---- !u!114 &-3981354306021289000
+--- !u!114 &-7831685314460218803
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8577388931878464742}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55209249b1283435bb041dbf1c978b98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!65 &2707141892097093097
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8577388931878464742}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 250, y: 100, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &8660342541609832535
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -340,6 +367,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8577388931878464742}
   m_Enabled: 0
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0d1865366192d4962b68f06522eb6d36, type: 3}
+  m_Script: {fileID: 11500000, guid: 46707bd972a2647099291f40b7b567c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Delegates: []
