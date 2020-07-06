@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 408a4733e1fa14aadaaa3195c1e449b2, type: 3}
+  m_Name: orange_card_2
+  m_EditorClassIdentifier: 
+  cardName: Solar + Storage
+  cardType: 3
+  price: 0
+  co2e: 143000
+  energy: 280000
+  saves: 0
+  description: $950million ($6,700/ton C02e) on every home. \\n Solar Farm \\t $520
+    million ($3,600/ton C02e) on 1600 acres of brownfield and pasture.
+  secret: Unknown but significant $$ for RCEA (not buying power at peak prices and
+    lower payments for Resource Adequacy) and valuable pwer backup for homes and
+    businesses.

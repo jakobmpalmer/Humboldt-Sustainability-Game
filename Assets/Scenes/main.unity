@@ -880,11 +880,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9eee1245ac08ae4d97e6d8e777191e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardObject: {fileID: 11400000, guid: d1ca9158ffcdc405f89305a9c117c193, type: 2}
-  greenCards:
-  - {fileID: 11400000, guid: d1ca9158ffcdc405f89305a9c117c193, type: 2}
-  - {fileID: 11400000, guid: 01b68d8dd7ee7435298c138e89943605, type: 2}
-  - {fileID: 11400000, guid: 681081465d0b8412c9a148581c112bac, type: 2}
+  cardDeck: []
   cardTemplate: {fileID: 8577388931878464742, guid: 0fdf277b8d8334d01ab41eb027802c15,
     type: 3}
   mainCanvas: {fileID: 773190284}
@@ -1052,7 +1048,7 @@ PrefabInstance:
         type: 3}
       propertyPath: card
       value: 
-      objectReference: {fileID: 11400000, guid: d1ca9158ffcdc405f89305a9c117c193,
+      objectReference: {fileID: 11400000, guid: d0c5741eba7704c7cb2f9bc343e6365e,
         type: 2}
     - target: {fileID: -410925609283367364, guid: 0fdf277b8d8334d01ab41eb027802c15,
         type: 3}

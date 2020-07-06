@@ -7,9 +7,9 @@ using UnityEngine.UI;
 public class GameScript : MonoBehaviour
 {
 
-    public GreenCard cardObject;
-    //public GreenCard[] greenCards;
-    public List<GreenCard> greenCards;
+    //public Card cardObject;
+    //public GreenCard[] cardDeck;
+    public List<Card> cardDeck;
     
     public GameObject cardTemplate;
     private GameObject cardPrefab;
@@ -25,6 +25,8 @@ public class GameScript : MonoBehaviour
     {
         //DrawCards(mainCanvas.transform, 2);
         playerDeck = new List<GameObject>();
+        LoadResources();
+        Debug.Log("Resources Loaded");
     }
 
     // Update is called once per frame
@@ -38,26 +40,28 @@ public class GameScript : MonoBehaviour
         for (int i = 0; i < num; i++)
         {
             //New Card choice
-            int rand = Random.Range(0, greenCards.Count);
+            int rand = Random.Range(0, cardDeck.Count);
             Debug.Log("your random: " + rand);
             
             cardPrefab = Instantiate(cardTemplate, new Vector3(i * 200.0F, i * -25, 0), Quaternion.identity);
             cardPrefab.transform.SetParent(newParent, false);
             // cardPrefab.GetComponent<CardDisplay>().card = cardObject;
-            cardPrefab.GetComponent<CardDisplay>().card = greenCards[rand];
+            cardPrefab.GetComponent<CardDisplay>().card = cardDeck[rand];
             cardPrefab.GetComponent<CardDisplay>().nameText = cardPrefab.GetComponentsInChildren<Text>()[0];
             cardPrefab.GetComponent<CardDisplay>().descriptionText = cardPrefab.GetComponentsInChildren<Text>()[2];
             cardPrefab.GetComponent<CardDisplay>().priceText = cardPrefab.GetComponentsInChildren<Text>()[1];
             //cardPrefab.GetComponent<CardDisplay>().cardType = gameObject.cardType;
 
-            //greenCards = RemoveCards(greenCards, rand);
+            //cardDeck = RemoveCards(cardDeck, rand);
             playerDeck.Add(cardPrefab);
-            greenCards.RemoveAt(rand);
+            cardDeck.RemoveAt(rand);
 
             
-            IEnumerator coroutine = MoveObject(cardPrefab, playerArea, 1.0f, playerDeck.Count);
+            IEnumerator coroutine = MoveObject(cardPrefab, 1.0f);
+            //IEnumerator coroutine = MoveObject(cardPrefab, playerArea, 1.0f, playerDeck.Count);
             StartCoroutine(coroutine);
-
+            coroutine = StackObject(cardPrefab, 1.0f);
+            StartCoroutine(coroutine);
             // if(playerDeck.Count == 1){                
             //     cardPrefab.transform.position.x = -345;
             // } else {
@@ -97,57 +101,10 @@ public class GameScript : MonoBehaviour
 
     }
 
-    // public void SendToPlayerArea(){
-    //     float timeOfTravel=5; //time after object reach a target place 
-    //     float currentTime=0; // actual floting time 
-    //     float normalizedValue = 0f;
-
-    //     Debug.Log("PlayerDeck.Count: " + playerDeck.Count);
-    //     for (int i = 0; i < playerDeck.Count; i++)
-    //     {
-    //         while (currentTime <= timeOfTravel) { 
-    //             currentTime += Time.deltaTime; 
-    //             normalizedValue=currentTime/timeOfTravel; // we normalize our time 
-    //         }
-    //         //greenCards[i].GetComponent<RectTransform>().localPosition = Vector3.Lerp(greenCards[i].GetComponent<RectTransform>().localPosition, playerArea.transform.localPosition, normalizedValue);      
-    //         playerDeck[i].GetComponent<RectTransform>().localPosition = Vector3.Lerp(playerDeck[i].GetComponent<RectTransform>().localPosition, playerArea.transform.localPosition, normalizedValue);      
-    //     }
-    // }
-
-    // public void AddToDeck(GameObject[] cardsToAdd, List<GameObject> playerDeck){
-    //     for (int i = 0; i < cardsToAdd.Count; i++)
-    //     {
-    //         playerDeck.Add(cardsToAdd[i]);
-    //     }
-    // }
-
-    // private IEnumerator WaitAndPrint(float waitTime)
-    // {
-    //     yield return new WaitForSeconds(waitTime);
-
-    //     float timeOfTravel=5; //time after object reach a target place 
-    //     float currentTime=0; // actual floting time 
-    //     float normalizedValue = 0f;
-
-    //     Debug.Log("PlayerDeck.Count: " + playerDeck.Count);
-    //     for (int i = 0; i < playerDeck.Count; i++)
-    //     {
-    //         while (currentTime <= timeOfTravel) { 
-    //             currentTime += Time.deltaTime; 
-    //             normalizedValue=currentTime/timeOfTravel; // we normalize our time 
-    //         }
-    //         //greenCards[i].GetComponent<RectTransform>().localPosition = Vector3.Lerp(greenCards[i].GetComponent<RectTransform>().localPosition, playerArea.transform.localPosition, normalizedValue);      
-    //         playerDeck[i].GetComponent<RectTransform>().localPosition = Vector3.Lerp(playerDeck[i].GetComponent<RectTransform>().localPosition, playerArea.transform.localPosition, normalizedValue);      
-    //     }
-
-
-    //     print("Coroutine ended: " + Time.time + " seconds");
-    // }
-
-
-    IEnumerator MoveObject(GameObject source, GameObject destination, float overTime, int numCards)
+    IEnumerator MoveObject(GameObject source, float overTime)
+    //IEnumerator MoveObject(GameObject source, GameObject destination, float overTime, int numCards)
     {
-        Vector3 destPos = destination.transform.position;
+        //Vector3 destPos = destination.transform.position;
         Vector3 sourcePos = source.GetComponent<RectTransform>().position;
         yield return new WaitForSeconds(1);
         float startTime = Time.time;
@@ -161,6 +118,93 @@ public class GameScript : MonoBehaviour
             //yield return new WaitForSeconds(1);
         }
         source.transform.position = playerArea.transform.position;
+    }
+
+
+    IEnumerator StackObject(GameObject source, float overTime)
+    {
+        int deckCount = playerDeck.Count;
+        yield return new WaitForSeconds(3);
+        Debug.Log("PlayerCount" + deckCount);
+        Debug.Log("Stacking Object!");
+        
+        GameObject destination;
+        Vector3 destPos;
+        source.transform.SetParent(playerArea.transform, false);
+        float xOffset = playerArea.GetComponent<RectTransform>().rect.width / 2;
+
+        float yOffset = 0;
+        if(deckCount >=6) {
+            yOffset = 1;
+        }
+
+        if(deckCount == 1){
+
+            destination = playerArea;            
+            Debug.Log("xOffset: " + xOffset);
+            //Debug.Log("MathyVersion: " + (destination.transform.position.x - xOffset);
+            destPos = new Vector3(destination.transform.position.x - xOffset + 122, 0, 0);//destination.transform.position.y, destination.transform.position.z);
+        } else {
+            //source.transform.SetParent(playerDeck[playerDeck.Count-1].transform, false);
+            destination = playerDeck[deckCount -1];
+            destPos = new Vector3(
+                destination.transform.position.x - xOffset + (100 * deckCount),
+                yOffset * 100,
+                0
+            );
+            // destination.transform.position.y, destination.transform.position.z);
+        }
+        
+        
+        Vector3 sourcePos = source.GetComponent<RectTransform>().position;
+        
+        float startTime = Time.time;
+        while(Time.time < startTime + overTime)
+        {
+            
+            //source.transform.position = Vector3.Lerp(sourcePos, new Vector3(destPos.x, destPos.y, destPos.z), (Time.time - startTime)/overTime);      
+            source.transform.localPosition = Vector3.Lerp(source.GetComponent<RectTransform>().position, destPos, (Time.time - startTime)/overTime);      
+            //transform.position = Vector3.Lerp(source, target, (Time.time - startTime)/overTime);
+            yield return null;
+            //yield return new WaitForSeconds(1);
+        }
+        //source.transform.position = playerArea.transform.position;
+    }
+
+
+
+    public void LoadResources(){
+        object[] greenCards = Resources.LoadAll(("Cards/Green"), typeof(Card));
+        object[] blueCards = Resources.LoadAll(("Cards/Blue"), typeof(Card));
+        object[] orangeCards = Resources.LoadAll(("Cards/Orange"), typeof(Card));
+        object[] pinkCards = Resources.LoadAll(("Cards/Pink"), typeof(Card));
+        int count = 0;
+
+        foreach (Card card in greenCards){
+            count++;
+            cardDeck.Add(card);
+        }
+        Debug.Log("Count after green: " + count);
+
+        foreach (Card card in blueCards){
+            count++;
+            cardDeck.Add(card);
+        }
+        Debug.Log("Count after blue: " + count);
+
+        foreach (Card card in orangeCards){
+            count++;
+            cardDeck.Add(card);
+        }
+        Debug.Log("Count after orange: " + count);
+
+        foreach (Card card in pinkCards){
+            count++;
+            cardDeck.Add(card);
+        }
+        Debug.Log("Count after pink: " + count);
+
+
     }
 
 

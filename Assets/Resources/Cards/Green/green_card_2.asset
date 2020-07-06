@@ -9,10 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62b6fb33216fd3c46b381e7e8efacae0, type: 3}
+  m_Script: {fileID: 11500000, guid: 408a4733e1fa14aadaaa3195c1e449b2, type: 3}
   m_Name: green_card_2
   m_EditorClassIdentifier: 
   cardName: Composting Dairy Manure with mill waste bedding
   cardType: 0
   price: 5000000
   description: 35,000 Tons less methane + 22,000 from not burning ($143/ton C02e)
+  secret: 

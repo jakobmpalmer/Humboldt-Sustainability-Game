@@ -21,19 +21,19 @@ public class CardHover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     public void OnBeginDrag(PointerEventData eventData){
         Debug.Log("Begin Drag");
         this.transform.SetParent(this.transform, false);
-        startingPos = this.transform.position;
+        startingPos = this.transform.localPosition;
         //offset = new Vector2(this.transform.position.x - eventData.position.x, this.transform.position.y - eventData.position.y);
     }
 
     public void OnDrag(PointerEventData eventData){
-        Debug.Log("Dragging" + eventData.position * Time.deltaTime);
+        Debug.Log("Dragging" + eventData.position);// * Time.deltaTime);
         //this.transform.position = (eventData.position * Time.deltaTime);
-        this.transform.position = new Vector3(eventData.position.x, eventData.position.y, 0) * Time.deltaTime;
+        this.transform.localPosition = new Vector3(eventData.position.x, eventData.position.y, 0);// * Time.deltaTime;
     }
 
     public void OnEndDrag(PointerEventData eventData){
         Debug.Log("End Drag");
-        this.transform.position = startingPos;
+        this.transform.localPosition = startingPos;
     }
 
 

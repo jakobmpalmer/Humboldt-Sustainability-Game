@@ -9,10 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9c03e3d04bd32487590d9e1972b2dc9c, type: 3}
-  m_Name: orange_card_1
+  m_Script: {fileID: 11500000, guid: 408a4733e1fa14aadaaa3195c1e449b2, type: 3}
+  m_Name: green_card_3
   m_EditorClassIdentifier: 
-  cardName: 
+  cardName: Mediterranean Diet (Red meat 1-2x a month, daily veg/chicken/fish)
   cardType: 0
   price: 0
-  description: 
+  description: 131,000 Tons ($0/ton C02e)
+  secret: 

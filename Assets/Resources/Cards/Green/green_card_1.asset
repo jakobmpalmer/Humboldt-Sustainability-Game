@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62b6fb33216fd3c46b381e7e8efacae0, type: 3}
+  m_Script: {fileID: 11500000, guid: 408a4733e1fa14aadaaa3195c1e449b2, type: 3}
   m_Name: green_card_1
   m_EditorClassIdentifier: 
   cardName: Composting Food Waste 1:1 with sawmill waste.
@@ -17,3 +17,4 @@ MonoBehaviour:
   price: 8900000
   description: '72, 000 Tons: 12,000 no landfill, 35,000 no burning, 25,000 into
     soil. $123/tons C02'
+  secret: 
