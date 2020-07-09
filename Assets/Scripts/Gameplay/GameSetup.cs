@@ -37,6 +37,7 @@ public class GameSetup : MonoBehaviour
         buttons[2].onClick.AddListener(SetPlayersThree);
         buttons[3].onClick.AddListener(SetPlayersFour);
         buttons[4].onClick.AddListener(SetPlayersFive);
+        buttons[5].onClick.AddListener(SetPlayersSix);
         
     }
 
@@ -82,16 +83,28 @@ public class GameSetup : MonoBehaviour
         this.enabled = false;
     }
 
+    void SetPlayersSix(){
+        SetPlayers(6);
+        GetComponent<GameScript>().numPlayers = 6;
+        GetComponent<GameScript>().enabled = (true);
+        setupCanva.SetActive(false);
+        this.enabled = false;
+    }
+
     void SetPlayers(int numPlayers){
         int j;
         players = new GameObject[numPlayers];
         for (int i = 0; i < numPlayers; i++)
         {
             j = i+1;
-            players[i] = new GameObject();
-            players[i].name = "Player" + j;
-            players[i].transform.SetParent(playersGroup.transform);
+            players[i] = new GameObject("Player" + j);
+            players[i].transform.position = new Vector3 (0,0,0);
+            players[i].transform.localScale = new Vector3(1,1,1);
+            players[i].transform.SetParent(playersGroup.transform, false);
             players[i].AddComponent<PlayerScript>();
+            GameObject deck = new GameObject("Deck");
+            deck.transform.SetParent(players[i].transform, false);
+            //deck.transform.localScale = new Vector3(1,1,1);
         }
 
     }

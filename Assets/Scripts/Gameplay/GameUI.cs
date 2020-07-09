@@ -28,8 +28,9 @@ public class GameUI : MonoBehaviour
             string buttonName = this.name;
             Debug.Log ("You have clicked the " + buttonName + " button!");
             
-            //gameMaster.GetComponent<GameScript>().DrawCards(this.transform, 1);
             gameMaster.GetComponent<GameScript>().DrawCards(this.transform, 1);
+            //gameMaster.GetComponent<GameScript>().DrawCards(gameMaster.GetComponent<GameScript>().currentPlayer.transform.GetChild(0).gameObject.transform, 1);
+            //gameMaster.GetComponent<GameScript>().DrawCards(this.transform, 1);
             Debug.Log("Drew Cards...");
             //gameMaster.GetComponent<GameScript>().SendToPlayerArea();  
 	}

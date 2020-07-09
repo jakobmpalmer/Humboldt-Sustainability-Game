@@ -27,7 +27,7 @@ public class GameScript : MonoBehaviour
     public GameObject players;
     public GameObject[] playersList;
 
-    GameObject currentPlayer;
+    public GameObject currentPlayer;
     public int nextPlayerNum;
 
 
@@ -67,6 +67,7 @@ public class GameScript : MonoBehaviour
             
             cardPrefab = Instantiate(cardTemplate, new Vector3(i * 200.0F, i * -25, 0), Quaternion.identity);
             cardPrefab.transform.SetParent(newParent, false);
+            //cardPrefab.transform.SetParent(currentPlayer.transform.GetChild(0), true);
             // cardPrefab.GetComponent<CardDisplay>().card = cardObject;
             cardPrefab.GetComponent<CardDisplay>().card = cardDeck[rand];
             cardPrefab.GetComponent<CardDisplay>().nameText = cardPrefab.GetComponentsInChildren<Text>()[0];
@@ -80,7 +81,7 @@ public class GameScript : MonoBehaviour
             currentPlayer.GetComponent<PlayerScript>().playerDeck.Add(cardPrefab);
             cardDeck.RemoveAt(rand);
 
-            
+            //cardPrefab.transform.SetParent(currentPlayer.transform.GetChild(0), true);
             IEnumerator coroutine = MoveObject(cardPrefab, 1.0f);
             //IEnumerator coroutine = MoveObject(cardPrefab, playerArea, 1.0f, playerDeck.Count);
             StartCoroutine(coroutine);
@@ -91,6 +92,7 @@ public class GameScript : MonoBehaviour
             // } else {
             //     cardPrefab.transform.position.x = playerDeck[playerDeck.Count - 1].transform.position.x + 100;
             // }
+            
 
         }
     }
@@ -157,13 +159,14 @@ public class GameScript : MonoBehaviour
     {
         int deckCount = currentPlayer.GetComponent<PlayerScript>().playerDeck.Count;
         //int deckCount = playerDeck.Count;
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(2);
         Debug.Log("PlayerCount" + deckCount);
         Debug.Log("Stacking Object!");
         
         GameObject destination;
         Vector3 destPos;
         source.transform.SetParent(playerArea.transform, false);
+        //source.transform.SetParent(currentPlayer.transform.GetChild(0).transform, false);
         float xOffset = playerArea.GetComponent<RectTransform>().rect.width / 2;
 
         float yOffset = 0;
@@ -203,6 +206,8 @@ public class GameScript : MonoBehaviour
             //yield return new WaitForSeconds(1);
         }
         //source.transform.position = playerArea.transform.position;
+        yield return new WaitForSeconds(1);
+        source.transform.SetParent(currentPlayer.transform.GetChild(0), true);
     }
 
 
@@ -243,15 +248,16 @@ public class GameScript : MonoBehaviour
 
     public void EndTurn(){
         Debug.Log("Chosing player" + nextPlayerNum);
+        currentPlayer.transform.GetChild(0).gameObject.SetActive(false);
         currentPlayer = playersList[nextPlayerNum];
-        
-
+        currentPlayer.transform.GetChild(0).gameObject.SetActive(true);
         if(nextPlayerNum == numPlayers-1){
             nextPlayerNum = 0;
         } else {
             nextPlayerNum++;
         }
         Debug.Log("Next Player num " + nextPlayerNum);
+        
         IEnumerator playerTurnCoroutine = ShowPlayerTurn(2);
             StartCoroutine(playerTurnCoroutine);
     }
@@ -267,7 +273,7 @@ public class GameScript : MonoBehaviour
         playerTurnText.text = currentPlayer.name + "'s Turn!";
         yield return new WaitForSeconds(showFor);
         playerTurnText.enabled = false;
-        playerTurnTitle.enabled = (false);
+        playerTurnTitle.enabled = (false); 
         
     }
 
