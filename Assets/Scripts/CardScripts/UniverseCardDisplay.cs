@@ -34,7 +34,8 @@ public class UniverseCardDisplay : MonoBehaviour
 
         yearText.text = uCard.year.ToString();
         
-        descText.text = uCard.content;
+        string content = uCard.content;
+        descText.text = content.Replace("'newline'", "\n");//uCard.content;
         
     }
 

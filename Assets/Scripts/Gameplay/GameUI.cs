@@ -17,18 +17,25 @@ public class GameUI : MonoBehaviour
         gameMaster = GameObject.Find("GameMaster");
         // Button btn = this.GetComponent<Button>();
         Button btn = GameObject.Find("DrawBtn").GetComponent<Button>();
-        btn.onClick.AddListener(TaskOnClick);
+        Button nextTurnButton = GameObject.Find("EndTurnBtn").GetComponent<Button>();
+        btn.onClick.AddListener(DrawCards);
+        nextTurnButton.onClick.AddListener(EndTurn);
 
     }
 
-    void TaskOnClick(){
+    void DrawCards(){
             
             string buttonName = this.name;
             Debug.Log ("You have clicked the " + buttonName + " button!");
             
+            //gameMaster.GetComponent<GameScript>().DrawCards(this.transform, 1);
             gameMaster.GetComponent<GameScript>().DrawCards(this.transform, 1);
             Debug.Log("Drew Cards...");
             //gameMaster.GetComponent<GameScript>().SendToPlayerArea();  
 	}
+
+    void EndTurn(){
+        gameMaster.GetComponent<GameScript>().EndTurn();
+    }
 
 }

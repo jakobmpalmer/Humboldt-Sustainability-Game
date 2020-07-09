@@ -12,6 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3b9086245a7c4a00892b9692174ba3e, type: 3}
   m_Name: doniverse_2022
   m_EditorClassIdentifier: 
-  year: 0
-  doniverse: 0
-  content: 
+  year: 2022
+  doniverse: 1
+  content: Way to go! If you chose walking, biking, public transit, or a healthy
+    diet, you saved money and the lives of some of your neighbors.'newline''newline'Check
+    the back of all your solutions on the board to see your savings and add them
+    to your Climate Action Fund.

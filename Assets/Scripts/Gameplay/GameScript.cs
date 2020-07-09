@@ -20,6 +20,18 @@ public class GameScript : MonoBehaviour
 
     public List<GameObject> playerDeck;
 
+    public int numPlayers;
+
+    GameSetup gameSetupScript;
+    
+    public GameObject players;
+    public GameObject[] playersList;
+
+    GameObject currentPlayer;
+    public int nextPlayerNum;
+
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -27,6 +39,16 @@ public class GameScript : MonoBehaviour
         playerDeck = new List<GameObject>();
         LoadResources();
         Debug.Log("Resources Loaded");
+        players = GameObject.Find("Players");
+        playersList = new GameObject[numPlayers];
+        for (int i = 0; i < numPlayers; i++)
+        {
+            playersList[i] = players.transform.GetChild(i).gameObject;
+        }
+        currentPlayer = playersList[0];
+        currentPlayer.GetComponent<PlayerScript>().canPlay = true;
+        nextPlayerNum = 1;
+        
     }
 
     // Update is called once per frame
@@ -53,7 +75,9 @@ public class GameScript : MonoBehaviour
             //cardPrefab.GetComponent<CardDisplay>().cardType = gameObject.cardType;
 
             //cardDeck = RemoveCards(cardDeck, rand);
-            playerDeck.Add(cardPrefab);
+            //playerDeck.Add(cardPrefab);
+            
+            currentPlayer.GetComponent<PlayerScript>().playerDeck.Add(cardPrefab);
             cardDeck.RemoveAt(rand);
 
             
@@ -70,6 +94,14 @@ public class GameScript : MonoBehaviour
 
         }
     }
+
+    // public void DealerMoveCards(){
+    //     IEnumerator coroutine = MoveObject(cardPrefab, 1.0f);
+    //         //IEnumerator coroutine = MoveObject(cardPrefab, playerArea, 1.0f, playerDeck.Count);
+    //         StartCoroutine(coroutine);
+    //         coroutine = StackObject(cardPrefab, 1.0f);
+    //         StartCoroutine(coroutine);
+    // }
 
     // GreenCard[] RemoveCards(GreenCard[] deck, int removeInt){
     //     GreenCard[] tempArray = deck;
@@ -123,7 +155,8 @@ public class GameScript : MonoBehaviour
 
     IEnumerator StackObject(GameObject source, float overTime)
     {
-        int deckCount = playerDeck.Count;
+        int deckCount = currentPlayer.GetComponent<PlayerScript>().playerDeck.Count;
+        //int deckCount = playerDeck.Count;
         yield return new WaitForSeconds(3);
         Debug.Log("PlayerCount" + deckCount);
         Debug.Log("Stacking Object!");
@@ -146,7 +179,8 @@ public class GameScript : MonoBehaviour
             destPos = new Vector3(destination.transform.position.x - xOffset + 122, 0, 0);//destination.transform.position.y, destination.transform.position.z);
         } else {
             //source.transform.SetParent(playerDeck[playerDeck.Count-1].transform, false);
-            destination = playerDeck[deckCount -1];
+            destination = currentPlayer.GetComponent<PlayerScript>().playerDeck[deckCount -1];
+            //destination = playerDeck[deckCount -1];
             destPos = new Vector3(
                 destination.transform.position.x - xOffset + (100 * deckCount),
                 yOffset * 100,
@@ -206,6 +240,38 @@ public class GameScript : MonoBehaviour
 
 
     }
+
+    public void EndTurn(){
+        Debug.Log("Chosing player" + nextPlayerNum);
+        currentPlayer = playersList[nextPlayerNum];
+        
+
+        if(nextPlayerNum == numPlayers-1){
+            nextPlayerNum = 0;
+        } else {
+            nextPlayerNum++;
+        }
+        Debug.Log("Next Player num " + nextPlayerNum);
+        IEnumerator playerTurnCoroutine = ShowPlayerTurn(2);
+            StartCoroutine(playerTurnCoroutine);
+    }
+
+    IEnumerator ShowPlayerTurn(float showFor)
+    //IEnumerator MoveObject(GameObject source, GameObject destination, float overTime, int numCards)
+    {
+        Image playerTurnTitle = GameObject.Find("PlayerTurnTitle").GetComponent<Image>();
+        Text playerTurnText = GameObject.Find("PlayerTurnText").GetComponent<Text>();
+        //Vector3 destPos = destination.transform.position;
+        playerTurnTitle.enabled = (true);
+        playerTurnText.enabled = true;
+        playerTurnText.text = currentPlayer.name + "'s Turn!";
+        yield return new WaitForSeconds(showFor);
+        playerTurnText.enabled = false;
+        playerTurnTitle.enabled = (false);
+        
+    }
+
+
 
 
 }
