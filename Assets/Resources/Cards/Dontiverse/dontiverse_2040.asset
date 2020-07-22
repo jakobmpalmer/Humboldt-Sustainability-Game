@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3b9086245a7c4a00892b9692174ba3e, type: 3}
+  m_Name: dontiverse_2040
+  m_EditorClassIdentifier: 
+  year: 2040
+  doniverse: 0
+  content: Sea level rise 1.5 feet. Global temperature rise 3.6 degrees F.<newline>Highway
+    101 south of Eureka experiences tidal flooding. Five more Wiyot cultural sites
+    go underwater.<newline>Backflow into Eureka's wastewater system spills raw sewage
+    into city streets and Humboldt Bay.<newline>Ocean warming and acidification kill
+    the commercial shellfish industry, costing the local economy $45 million per
+    year.

@@ -8,7 +8,9 @@ public class PlayerScript : MonoBehaviour
 
     public bool canPlay;
 
-    public int currency;
+    public string playerName;
+
+    public int money;
     public List<GameObject> playerDeck;
 
     public GameObject cardTemplate;
@@ -57,7 +59,7 @@ public class PlayerScript : MonoBehaviour
     //         cardPrefab.transform.SetParent(newParent, false);
     //         // cardPrefab.GetComponent<CardDisplay>().card = cardObject;
     //         cardPrefab.GetComponent<CardDisplay>().card = cardDeck[rand];
-    //         cardPrefab.GetComponent<CardDisplay>().nameText = cardPrefab.GetComponentsInChildren<Text>()[0];
+    //         cardPrefab.GetComponent<CardDisplay>().playerNameText = cardPrefab.GetComponentsInChildren<Text>()[0];
     //         cardPrefab.GetComponent<CardDisplay>().descriptionText = cardPrefab.GetComponentsInChildren<Text>()[2];
     //         cardPrefab.GetComponent<CardDisplay>().priceText = cardPrefab.GetComponentsInChildren<Text>()[1];
     //         //cardPrefab.GetComponent<CardDisplay>().cardType = gameObject.cardType;

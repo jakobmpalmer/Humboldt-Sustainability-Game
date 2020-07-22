@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 8208207964036228629}
   - component: {fileID: 290688894002577474}
   - component: {fileID: 4653202413194718414}
+  - component: {fileID: 6215410485018825093}
+  - component: {fileID: 5252392853512647591}
   m_Layer: 5
   m_Name: UniverseCardDisplay
   m_TagString: Untagged
@@ -94,6 +96,47 @@ MonoBehaviour:
   titleText: {fileID: 1448445808766965264}
   yearText: {fileID: 1530157264862276367}
   descText: {fileID: 5209177585537848732}
+--- !u!114 &6215410485018825093
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3485906466553203437}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51413fca1d863a3488c42bbe5a34d717, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  offset: {x: 0, y: 0}
+  startingPos: {x: 0, y: 0}
+  prevCardColor: {r: 0, g: 0, b: 0, a: 0}
+--- !u!61 &5252392853512647591
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3485906466553203437}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.117549896, y: -0.07736206}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 130.13693, y: 145.15335}
+  m_EdgeRadius: 0
 --- !u!1 &3611555876164013077
 GameObject:
   m_ObjectHideFlags: 0

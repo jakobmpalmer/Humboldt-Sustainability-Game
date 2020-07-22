@@ -12,6 +12,8 @@ public class CardDisplay : MonoBehaviour
     public Text descriptionText;
     public Text priceText;
     public Text secretText;
+
+    public bool selected;
     // Start is called before the first frame update
     void Start()
     {
@@ -33,11 +35,11 @@ public class CardDisplay : MonoBehaviour
                     Debug.Log("Card is blue!");
                     break;
             case 2: // if cardType == 2
-                    GetComponent<Image>().color = new Color(255, 153, 204, 10);
+                    GetComponent<Image>().color = new Color(255, 153, 204, 1);
                     Debug.Log("Card is Pink!");
                     break;
             case 3: // if cardType == 3
-                    GetComponent<Image>().color = new Color(255, 171, 69, 10);
+                    GetComponent<Image>().color = new Color(255, 128, 0, 1);
                     Debug.Log("Card is orange!");
                     break;
             case 0: // if cardType != (1,2,3)

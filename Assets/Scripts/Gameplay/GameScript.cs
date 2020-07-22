@@ -30,11 +30,15 @@ public class GameScript : MonoBehaviour
     public GameObject currentPlayer;
     public int nextPlayerNum;
 
+    public GameObject bankArea;
 
+    bool DEBUG = true;
 
     // Start is called before the first frame update
     void Start()
     {
+        //(DEBUG) : Debug.Log("") ? "NO DEBUG";
+        
         //DrawCards(mainCanvas.transform, 2);
         playerDeck = new List<GameObject>();
         LoadResources();
@@ -44,6 +48,7 @@ public class GameScript : MonoBehaviour
         for (int i = 0; i < numPlayers; i++)
         {
             playersList[i] = players.transform.GetChild(i).gameObject;
+            //bankArea.transform.GetChild(i).GetComponent<Text>().text = playersList[i].GetComponent<PlayerScript>().name;
         }
         currentPlayer = playersList[0];
         currentPlayer.GetComponent<PlayerScript>().canPlay = true;
@@ -84,9 +89,13 @@ public class GameScript : MonoBehaviour
             //cardPrefab.transform.SetParent(currentPlayer.transform.GetChild(0), true);
             IEnumerator coroutine = MoveObject(cardPrefab, 1.0f);
             //IEnumerator coroutine = MoveObject(cardPrefab, playerArea, 1.0f, playerDeck.Count);
+
+            //coroutine = MoveObjectToDeck(cardPrefab, 1.0f);
+            //StartCoroutine(coroutine);
             StartCoroutine(coroutine);
             coroutine = StackObject(cardPrefab, 1.0f);
             StartCoroutine(coroutine);
+
             // if(playerDeck.Count == 1){                
             //     cardPrefab.transform.position.x = -345;
             // } else {
@@ -140,19 +149,72 @@ public class GameScript : MonoBehaviour
     {
         //Vector3 destPos = destination.transform.position;
         Vector3 sourcePos = source.GetComponent<RectTransform>().position;
+        
         yield return new WaitForSeconds(1);
         float startTime = Time.time;
         while(Time.time < startTime + overTime)
         {
             
-            //source.transform.position = Vector3.Lerp(sourcePos, new Vector3(destPos.x, destPos.y, destPos.z), (Time.time - startTime)/overTime);      
             source.transform.position = Vector3.Lerp(source.GetComponent<RectTransform>().position, playerArea.transform.position, (Time.time - startTime)/overTime);      
+            //source.transform.position = Vector3.Lerp(source.GetComponent<RectTransform>().position, playArea, (Time.time - startTime)/overTime);      
             //transform.position = Vector3.Lerp(source, target, (Time.time - startTime)/overTime);
             yield return null;
             //yield return new WaitForSeconds(1);
         }
         source.transform.position = playerArea.transform.position;
+        Debug.Log("DoNE");
     }
+
+
+    //  IEnumerator MoveObjectToDeck(GameObject source, float overTime)
+    // //IEnumerator MoveObject(GameObject source, GameObject destination, float overTime, int numCards)
+    // {        
+    //     //Vector3 destPos = destination.transform.position;
+    //     Vector3 sourcePos = source.GetComponent<RectTransform>().position;
+    //     yield return new WaitForSeconds(1);
+    //     float startTime = Time.time;
+    //     source.transform.SetParent(playerArea.transform, false);
+
+    //     GameObject destination;
+    //     Vector3 destPos;
+    //     int deckCount = currentPlayer.GetComponent<PlayerScript>().playerDeck.Count;
+    //     float xOffset = playerArea.GetComponent<RectTransform>().rect.width / 2;
+    //     if(deckCount == 1){
+
+    //         destination = playerArea;            
+    //         Debug.Log("xOffset: " + xOffset);
+    //         //Debug.Log("MathyVersion: " + (destination.transform.position.x - xOffset);
+    //         destPos = new Vector3(destination.transform.localPosition.x - xOffset, destination.transform.localPosition.y, 0);//destination.transform.position.y, destination.transform.position.z);
+    //     } else {
+    //         //source.transform.SetParent(playerDeck[playerDeck.Count-1].transform, false);
+    //         destination = currentPlayer.GetComponent<PlayerScript>().playerDeck[deckCount -1];
+    //         //destination = playerDeck[deckCount -1];
+    //         destPos = new Vector3(
+    //             destination.transform.position.x - xOffset + (100 * deckCount),
+    //             destination.transform.position.y,//yOffset * 100,
+    //             0
+    //         );
+    //         // destination.transform.position.y, destination.transform.position.z);
+    //     }
+
+    //     while(Time.time < startTime + overTime)
+    //     {
+            
+    //         //source.transform.position = Vector3.Lerp(sourcePos, new Vector3(destPos.x, destPos.y, destPos.z), (Time.time - startTime)/overTime);      
+    //         source.transform.localPosition = Vector3.Lerp(source.GetComponent<RectTransform>().position, destPos, (Time.time - startTime)/overTime);      
+    //         //transform.position = Vector3.Lerp(source, target, (Time.time - startTime)/overTime);
+    //         yield return null;
+    //         //yield return new WaitForSeconds(1);
+    //     }
+    //     //source.transform.position = playerArea.transform.position;
+    //     //yield return new WaitForSeconds(1);
+    //     source.transform.SetParent(currentPlayer.transform.GetChild(0), true);
+    // }
+
+
+
+
+    
 
 
     IEnumerator StackObject(GameObject source, float overTime)
@@ -166,6 +228,12 @@ public class GameScript : MonoBehaviour
         GameObject destination;
         Vector3 destPos;
         source.transform.SetParent(playerArea.transform, false);
+
+
+        float halfBoard = playerArea.GetComponent<RectTransform>().rect.height * GameObject.Find("Canvas").GetComponent<Canvas>().scaleFactor / 2;
+        float halfCard = source.GetComponent<RectTransform>().rect.height * GameObject.Find("Canvas").GetComponent<Canvas>().scaleFactor / 2;
+        Vector3 playArea = new Vector3 (playerArea.transform.position.x, playerArea.transform.position.y + halfBoard - halfCard, playerArea.transform.position.z);
+
         //source.transform.SetParent(currentPlayer.transform.GetChild(0).transform, false);
         float xOffset = playerArea.GetComponent<RectTransform>().rect.width / 2;
 
@@ -179,14 +247,14 @@ public class GameScript : MonoBehaviour
             destination = playerArea;            
             Debug.Log("xOffset: " + xOffset);
             //Debug.Log("MathyVersion: " + (destination.transform.position.x - xOffset);
-            destPos = new Vector3(destination.transform.position.x - xOffset + 122, 0, 0);//destination.transform.position.y, destination.transform.position.z);
+            destPos = new Vector3(destination.transform.position.x - xOffset + 122, playerArea.transform.position.y + halfBoard - halfCard, 0);//destination.transform.position.y, destination.transform.position.z);
         } else {
             //source.transform.SetParent(playerDeck[playerDeck.Count-1].transform, false);
             destination = currentPlayer.GetComponent<PlayerScript>().playerDeck[deckCount -1];
             //destination = playerDeck[deckCount -1];
             destPos = new Vector3(
                 destination.transform.position.x - xOffset + (100 * deckCount),
-                yOffset * 100,
+                (playerArea.transform.position.y + halfBoard - halfCard) + (yOffset * 100),
                 0
             );
             // destination.transform.position.y, destination.transform.position.z);

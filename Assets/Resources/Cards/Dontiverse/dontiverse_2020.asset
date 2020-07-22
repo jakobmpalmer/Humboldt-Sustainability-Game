@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c3b9086245a7c4a00892b9692174ba3e, type: 3}
-  m_Name: doniverse_2022
+  m_Name: dontiverse_2020
   m_EditorClassIdentifier: 
-  year: 2022
-  doniverse: 1
-  content: Way to go! If you chose walking, biking, public transit, or a healthy
-    diet, you saved money and the lives of some of your neighbors.<newline>Check
-    the back of all your solutions on the board to see your savings and add them
-    to your Climate Action Fund.
+  year: 2020
+  doniverse: 0
+  content: Here we are. Global temperature has increased nearly 2 degrees F over
+    pre-industrial temperatures.<newline>Extreme weather events and acreage of wildfires
+    have more than doubled.<newline>Local sea level is 1.8 feet higher than in 1880,
+    but for this game we'll say sea level is starting at zero.

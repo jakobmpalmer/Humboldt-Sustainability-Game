@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3b9086245a7c4a00892b9692174ba3e, type: 3}
+  m_Name: dontiverse_2030
+  m_EditorClassIdentifier: 
+  year: 2030
+  doniverse: 0
+  content: Local sea level rise 1 foot. Global temperature rise 2.7 degrees.<newline>19
+    Wiyot cultural sites are inundated at high tide. 100 year high water events occur
+    every 10 years.<newline>The levees protecting Jacobs Avenue in Eureka give way,
+    and the area reverts to mud flats, displacing 25 businesses and causing the loss
+    of $11 million in property, 840 jobs, and 10% of Eureka's tax base.<newline>54
+    families in the Lazy J mobile home park lose their homes.

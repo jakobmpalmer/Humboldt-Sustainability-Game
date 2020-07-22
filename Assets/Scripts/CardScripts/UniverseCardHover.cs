@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class CardHover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler
+public class UniverseCardHover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler
 {
     public Vector2 offset;
     public Vector2 startingPos;
@@ -12,7 +12,7 @@ public class CardHover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     void OnMouseEnter() {
         //If your mouse hovers over the GameObject with the script attached, output this message
         Debug.Log("Mouse is over GameObject.");
-        GetComponent<RectTransform>().localScale = new Vector3(1.5f, 1.5f, 0f);
+        GetComponent<RectTransform>().localScale = new Vector3(1.3f, 1.3f, 0f);
     }
     void OnMouseExit() {
         //The mouse is no longer hovering over the GameObject so output this message each frame
@@ -21,13 +21,13 @@ public class CardHover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     }
 
     void OnMouseDown() {
-        this.gameObject.GetComponent<CardDisplay>().selected = true;
-        GameObject.Find("GameBoard").GetComponent<GameBoardScript>().SetCurrentCard(this.gameObject);
-        GameObject.Find("Canvas").GetComponent<GameUI>().UpdateInspector(this.gameObject);
+        
     }
 
     void OnMouseUp() {
-        
+//        this.gameObject.GetComponent<CardDisplay>().selected = true;
+        GameObject.Find("GameBoard").GetComponent<GameBoardScript>().SetCurrentCard(this.gameObject);
+        GameObject.Find("Canvas").GetComponent<GameUI>().UpdateInspectorUniverse(this.gameObject);
         //prevCardColor = this.GetComponent<Image>().color;        
     }
 
@@ -53,27 +53,13 @@ public class CardHover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     }
 
     public void OnEndDrag(PointerEventData eventData){
-        //Debug.Log("End Drag");
+        Debug.Log("End Drag");
         RectTransform gameBoard = GameObject.Find("GameBoard").GetComponent<RectTransform>();
-        //Debug.Log("GameBoard Position:: " + gameBoard.transform.position.x + ", " + gameBoard.transform.position.y);
-        //Debug.Log("LocalPosition:: " + gameBoard.transform.localPosition.x + ", " + gameBoard.transform.localPosition.y);
+        Debug.Log("GameBoard Position:: " + gameBoard.transform.position.x + ", " + gameBoard.transform.position.y);
+        Debug.Log("LocalPosition:: " + gameBoard.transform.localPosition.x + ", " + gameBoard.transform.localPosition.y);
 
-         if (RectTransformUtility.RectangleContainsScreenPoint(gameBoard.GetComponent<RectTransform>(), Input.mousePosition, Camera.main))
-        //if (RectTransformUtility.RectangleContainsScreenPoint(gameBoard, Input.mousePosition))
-        {   
-            Debug.Log("Dropped on board.");
-            Debug.Log("GameBoard Position:: " + gameBoard.transform.position.x + ", " + gameBoard.transform.position.y);
-            Debug.Log("LocalPosition:: " + gameBoard.transform.localPosition.x + ", " + gameBoard.transform.localPosition.y);
-            
-            Debug.Log(this.transform.position.x + ", " + this.transform.position.y + " |VS| loc: " + this.transform.localPosition.x + ", " + this.transform.localPosition.y);
-            this.transform.SetParent(gameBoard.transform, false);
-            //GetComponent<CardHover>().enabled = false;
-            //this.transform.position = new Vector3(-1 * gameBoard.sizeDelta.x / 2, 0, 0);
-            this.enabled = false;
-        } else {
-            // this.transform.localPosition = startingPos;
             this.transform.position = startingPos;
-        }
+        
     }
 
     public void OnDrop(PointerEventData eventData){
