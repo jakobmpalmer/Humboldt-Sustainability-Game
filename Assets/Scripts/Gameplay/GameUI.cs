@@ -7,7 +7,8 @@ using UnityEngine.UI;
 public class GameUI : MonoBehaviour
 {
 
-    GameObject gameMaster;
+    public GameObject gameMaster;
+    GameScript gameScript;
     GameObject gameTimer;
     //public Canvas gameCanvas;
     public GameObject[] playerCards;
@@ -19,13 +20,17 @@ public class GameUI : MonoBehaviour
     public Text inspectContent;
     public Text inspectPrice;
     public Text inspectDisp;
+    public Button nextTurnButton;
+
+    public Text Co2eDisplay;
 
     public void Start(){
-        gameMaster = GameObject.Find("GameMaster");
+        //gameMaster = GameObject.Find("GameMaster");
+        gameScript = gameMaster.GetComponent<GameScript>();
         gameTimer = GameObject.Find("Timer");
         // Button btn = this.GetComponent<Button>();
         Button btn = GameObject.Find("DrawBtn").GetComponent<Button>();
-        Button nextTurnButton = GameObject.Find("EndTurnBtn").GetComponent<Button>();
+        nextTurnButton = GameObject.Find("EndTurnBtn").GetComponent<Button>();
         Button pausePlayerBtn = GameObject.Find("PlayBtn").GetComponent<Button>();
         btn.onClick.AddListener(DrawCards);
         nextTurnButton.onClick.AddListener(EndTurn);
@@ -38,15 +43,13 @@ public class GameUI : MonoBehaviour
             string buttonName = this.name;
             Debug.Log ("You have clicked the " + buttonName + " button!");
             
-            gameMaster.GetComponent<GameScript>().DrawCards(this.transform, 1);
-            //gameMaster.GetComponent<GameScript>().DrawCards(gameMaster.GetComponent<GameScript>().currentPlayer.transform.GetChild(0).gameObject.transform, 1);
-            //gameMaster.GetComponent<GameScript>().DrawCards(this.transform, 1);
+            gameScript.DrawCards(this.transform, 1);
             Debug.Log("Drew Cards...");
-            //gameMaster.GetComponent<GameScript>().SendToPlayerArea();  
+            nextTurnButton.interactable = false;  
 	}
 
     void EndTurn(){
-        gameMaster.GetComponent<GameScript>().EndTurn();
+        gameScript.EndTurn();
     }
 
     void PausePlay(){
@@ -73,6 +76,10 @@ public class GameUI : MonoBehaviour
         //inspectPrice.enabled = true;
         inspectPrice.text = " ";
         inspectDisp.enabled = false;
+    }
+
+    public void UpdateCo2e(){
+        Co2eDisplay.text = gameScript.currentCo2e.ToString();
     }
 
 }

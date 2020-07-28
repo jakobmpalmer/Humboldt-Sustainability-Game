@@ -34,6 +34,7 @@ public class PlayerScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        playerName = gameObject.name;
         playerDeck = new List<GameObject>();
         gameMaster = GameObject.Find("GameMaster");
         gameScript = gameMaster.GetComponent<GameScript>();

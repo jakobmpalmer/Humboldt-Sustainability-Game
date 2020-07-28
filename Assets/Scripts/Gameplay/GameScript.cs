@@ -33,12 +33,21 @@ public class GameScript : MonoBehaviour
     public GameObject bankArea;
 
     bool DEBUG = true;
+    public int energy;
+
+    public float currentCo2e;
+
+    public float winningCo2e = 590000;
+    public GameObject gameUIObject;
+    GameUI gameUI;
 
     // Start is called before the first frame update
     void Start()
     {
         //(DEBUG) : Debug.Log("") ? "NO DEBUG";
-        
+        currentCo2e = 590000f;
+        gameUI = gameUIObject.GetComponent<GameUI>();
+        gameUI.UpdateCo2e();
         //DrawCards(mainCanvas.transform, 2);
         playerDeck = new List<GameObject>();
         LoadResources();
@@ -87,14 +96,26 @@ public class GameScript : MonoBehaviour
             cardDeck.RemoveAt(rand);
 
             //cardPrefab.transform.SetParent(currentPlayer.transform.GetChild(0), true);
-            IEnumerator coroutine = MoveObject(cardPrefab, 1.0f);
-            //IEnumerator coroutine = MoveObject(cardPrefab, playerArea, 1.0f, playerDeck.Count);
+           
+            // IEnumerator coroutine = MoveObject(cardPrefab, 1.0f);
+            // StartCoroutine(coroutine);
+            // coroutine = StackObject(cardPrefab, 1.0f);
+            // StartCoroutine(coroutine);
+            GameObject destRow;
+            int currentDeckSize = currentPlayer.GetComponent<PlayerScript>().playerDeck.Count;
+            if(currentDeckSize < 3){
+                destRow = GameObject.Find("DeckRowOne");
+                Debug.Log("<4 CardDeckCount: " + currentDeckSize);
+            } else if (currentDeckSize < 6) {
+                destRow = GameObject.Find("DeckRowTwo");
+                Debug.Log("<8 CardDeckCount: " + currentDeckSize);
+            } else {
+                destRow = GameObject.Find("DeckRowThree");
+                Debug.Log("ELSE CardDeckCount: " + currentDeckSize);
+            }
 
-            //coroutine = MoveObjectToDeck(cardPrefab, 1.0f);
-            //StartCoroutine(coroutine);
-            StartCoroutine(coroutine);
-            coroutine = StackObject(cardPrefab, 1.0f);
-            StartCoroutine(coroutine);
+            // cardPrefab.GetComponent<CardDisplay>().MoveAndStack(cardPrefab, playerArea, playerDeck.Count);
+            cardPrefab.GetComponent<CardDisplay>().MoveAndStack(cardPrefab, destRow, currentDeckSize);
 
             // if(playerDeck.Count == 1){                
             //     cardPrefab.transform.position.x = -345;
@@ -106,36 +127,6 @@ public class GameScript : MonoBehaviour
         }
     }
 
-    // public void DealerMoveCards(){
-    //     IEnumerator coroutine = MoveObject(cardPrefab, 1.0f);
-    //         //IEnumerator coroutine = MoveObject(cardPrefab, playerArea, 1.0f, playerDeck.Count);
-    //         StartCoroutine(coroutine);
-    //         coroutine = StackObject(cardPrefab, 1.0f);
-    //         StartCoroutine(coroutine);
-    // }
-
-    // GreenCard[] RemoveCards(GreenCard[] deck, int removeInt){
-    //     GreenCard[] tempArray = deck;
-    //     deck = new GreenCard[deck.Length - 1];
-    //     for (int i = 0; i < deck.Length; i++)
-    //     {
-    //         Debug.Log("Temp " + tempArray.Length);
-    //         Debug.Log("Deck " + deck.Length);
-    //         if (i != removeInt) {
-    //             deck[i] = tempArray[i];
-    //             Debug.Log("Adding " + tempArray[i]);
-    //         }
-    //         else {
-    //             Debug.Log("Skipping: " + tempArray[i].cardName.ToString() + " at position " + i);
-    //             i++;
-    //             Debug.Log("Instead, " + tempArray[i].cardName.ToString() + "added from " + i);
-    //             deck[i - 1] = tempArray[i];
-    //         } 
-
-    //     }
-    //     return deck;
-    // }
-
     void DrawDotiverse(){
 
     }
@@ -144,141 +135,10 @@ public class GameScript : MonoBehaviour
 
     }
 
-    IEnumerator MoveObject(GameObject source, float overTime)
-    //IEnumerator MoveObject(GameObject source, GameObject destination, float overTime, int numCards)
-    {
-        //Vector3 destPos = destination.transform.position;
-        Vector3 sourcePos = source.GetComponent<RectTransform>().position;
-        
-        yield return new WaitForSeconds(1);
-        float startTime = Time.time;
-        while(Time.time < startTime + overTime)
-        {
-            
-            source.transform.position = Vector3.Lerp(source.GetComponent<RectTransform>().position, playerArea.transform.position, (Time.time - startTime)/overTime);      
-            //source.transform.position = Vector3.Lerp(source.GetComponent<RectTransform>().position, playArea, (Time.time - startTime)/overTime);      
-            //transform.position = Vector3.Lerp(source, target, (Time.time - startTime)/overTime);
-            yield return null;
-            //yield return new WaitForSeconds(1);
-        }
-        source.transform.position = playerArea.transform.position;
-        Debug.Log("DoNE");
+    public void ReduceCo2e(float reduction){
+        currentCo2e -= reduction;
+        gameUI.UpdateCo2e();
     }
-
-
-    //  IEnumerator MoveObjectToDeck(GameObject source, float overTime)
-    // //IEnumerator MoveObject(GameObject source, GameObject destination, float overTime, int numCards)
-    // {        
-    //     //Vector3 destPos = destination.transform.position;
-    //     Vector3 sourcePos = source.GetComponent<RectTransform>().position;
-    //     yield return new WaitForSeconds(1);
-    //     float startTime = Time.time;
-    //     source.transform.SetParent(playerArea.transform, false);
-
-    //     GameObject destination;
-    //     Vector3 destPos;
-    //     int deckCount = currentPlayer.GetComponent<PlayerScript>().playerDeck.Count;
-    //     float xOffset = playerArea.GetComponent<RectTransform>().rect.width / 2;
-    //     if(deckCount == 1){
-
-    //         destination = playerArea;            
-    //         Debug.Log("xOffset: " + xOffset);
-    //         //Debug.Log("MathyVersion: " + (destination.transform.position.x - xOffset);
-    //         destPos = new Vector3(destination.transform.localPosition.x - xOffset, destination.transform.localPosition.y, 0);//destination.transform.position.y, destination.transform.position.z);
-    //     } else {
-    //         //source.transform.SetParent(playerDeck[playerDeck.Count-1].transform, false);
-    //         destination = currentPlayer.GetComponent<PlayerScript>().playerDeck[deckCount -1];
-    //         //destination = playerDeck[deckCount -1];
-    //         destPos = new Vector3(
-    //             destination.transform.position.x - xOffset + (100 * deckCount),
-    //             destination.transform.position.y,//yOffset * 100,
-    //             0
-    //         );
-    //         // destination.transform.position.y, destination.transform.position.z);
-    //     }
-
-    //     while(Time.time < startTime + overTime)
-    //     {
-            
-    //         //source.transform.position = Vector3.Lerp(sourcePos, new Vector3(destPos.x, destPos.y, destPos.z), (Time.time - startTime)/overTime);      
-    //         source.transform.localPosition = Vector3.Lerp(source.GetComponent<RectTransform>().position, destPos, (Time.time - startTime)/overTime);      
-    //         //transform.position = Vector3.Lerp(source, target, (Time.time - startTime)/overTime);
-    //         yield return null;
-    //         //yield return new WaitForSeconds(1);
-    //     }
-    //     //source.transform.position = playerArea.transform.position;
-    //     //yield return new WaitForSeconds(1);
-    //     source.transform.SetParent(currentPlayer.transform.GetChild(0), true);
-    // }
-
-
-
-
-    
-
-
-    IEnumerator StackObject(GameObject source, float overTime)
-    {
-        int deckCount = currentPlayer.GetComponent<PlayerScript>().playerDeck.Count;
-        //int deckCount = playerDeck.Count;
-        yield return new WaitForSeconds(2);
-        Debug.Log("PlayerCount" + deckCount);
-        Debug.Log("Stacking Object!");
-        
-        GameObject destination;
-        Vector3 destPos;
-        source.transform.SetParent(playerArea.transform, false);
-
-
-        float halfBoard = playerArea.GetComponent<RectTransform>().rect.height * GameObject.Find("Canvas").GetComponent<Canvas>().scaleFactor / 2;
-        float halfCard = source.GetComponent<RectTransform>().rect.height * GameObject.Find("Canvas").GetComponent<Canvas>().scaleFactor / 2;
-        Vector3 playArea = new Vector3 (playerArea.transform.position.x, playerArea.transform.position.y + halfBoard - halfCard, playerArea.transform.position.z);
-
-        //source.transform.SetParent(currentPlayer.transform.GetChild(0).transform, false);
-        float xOffset = playerArea.GetComponent<RectTransform>().rect.width / 2;
-
-        float yOffset = 0;
-        if(deckCount >=6) {
-            yOffset = 1;
-        }
-
-        if(deckCount == 1){
-
-            destination = playerArea;            
-            Debug.Log("xOffset: " + xOffset);
-            //Debug.Log("MathyVersion: " + (destination.transform.position.x - xOffset);
-            destPos = new Vector3(destination.transform.position.x - xOffset + 122, playerArea.transform.position.y + halfBoard - halfCard, 0);//destination.transform.position.y, destination.transform.position.z);
-        } else {
-            //source.transform.SetParent(playerDeck[playerDeck.Count-1].transform, false);
-            destination = currentPlayer.GetComponent<PlayerScript>().playerDeck[deckCount -1];
-            //destination = playerDeck[deckCount -1];
-            destPos = new Vector3(
-                destination.transform.position.x - xOffset + (100 * deckCount),
-                (playerArea.transform.position.y + halfBoard - halfCard) + (yOffset * 100),
-                0
-            );
-            // destination.transform.position.y, destination.transform.position.z);
-        }
-        
-        
-        Vector3 sourcePos = source.GetComponent<RectTransform>().position;
-        
-        float startTime = Time.time;
-        while(Time.time < startTime + overTime)
-        {
-            
-            //source.transform.position = Vector3.Lerp(sourcePos, new Vector3(destPos.x, destPos.y, destPos.z), (Time.time - startTime)/overTime);      
-            source.transform.localPosition = Vector3.Lerp(source.GetComponent<RectTransform>().position, destPos, (Time.time - startTime)/overTime);      
-            //transform.position = Vector3.Lerp(source, target, (Time.time - startTime)/overTime);
-            yield return null;
-            //yield return new WaitForSeconds(1);
-        }
-        //source.transform.position = playerArea.transform.position;
-        yield return new WaitForSeconds(1);
-        source.transform.SetParent(currentPlayer.transform.GetChild(0), true);
-    }
-
-
 
     public void LoadResources(){
         object[] greenCards = Resources.LoadAll(("Cards/Green"), typeof(Card));
@@ -291,27 +151,39 @@ public class GameScript : MonoBehaviour
             count++;
             cardDeck.Add(card);
         }
-        Debug.Log("Count after green: " + count);
+        //Debug.Log("Count after green: " + count);
 
         foreach (Card card in blueCards){
             count++;
             cardDeck.Add(card);
         }
-        Debug.Log("Count after blue: " + count);
+        //Debug.Log("Count after blue: " + count);
 
         foreach (Card card in orangeCards){
             count++;
             cardDeck.Add(card);
         }
-        Debug.Log("Count after orange: " + count);
+        //Debug.Log("Count after orange: " + count);
 
         foreach (Card card in pinkCards){
             count++;
             cardDeck.Add(card);
         }
-        Debug.Log("Count after pink: " + count);
+        //Debug.Log("Count after pink: " + count);
 
 
+    }
+
+
+
+    public void ShowErrorMessage(string message, float overTime){
+        IEnumerator coroutine = SlideMessage(message, GameObject.Find("ErrorMessage"), GameObject.Find("ErrorDestination"), overTime);
+        StartCoroutine(coroutine);
+    }
+
+    public void ShowSlideMessage(string message, string msgObj, string dest, float overTime){
+        IEnumerator coroutine = SlideMessage(message, GameObject.Find(msgObj), GameObject.Find(dest), overTime);
+        StartCoroutine(coroutine);
     }
 
     public void EndTurn(){
@@ -325,7 +197,10 @@ public class GameScript : MonoBehaviour
             nextPlayerNum++;
         }
         Debug.Log("Next Player num " + nextPlayerNum);
-        
+
+
+        //GameObject.Find("GameMaster").GetComponent<GameScript>().ShowErrorMessage("Not Enough Resources!", 1.0f);        
+        ShowSlideMessage(currentPlayer.name + "'s Turn!", "PlayerTurnTitle", "PlayerTitleDest", 1.0f);
         IEnumerator playerTurnCoroutine = ShowPlayerTurn(2);
             StartCoroutine(playerTurnCoroutine);
     }
@@ -343,6 +218,36 @@ public class GameScript : MonoBehaviour
         playerTurnText.enabled = false;
         playerTurnTitle.enabled = (false); 
         
+    }
+
+
+    IEnumerator SlideMessage(string message, GameObject messageObj, GameObject target, float overTime){
+        //Vector3 destPos = destination.transform.position;
+        Vector3 sourcePos = messageObj.GetComponent<RectTransform>().position;
+        messageObj.GetComponentInChildren<Text>().text = message;
+        Debug.Log("Message showing");
+        
+        float startTime = Time.time;
+        while(Time.time < startTime + overTime)
+        {
+            
+            messageObj.transform.position = Vector3.Lerp(messageObj.GetComponent<RectTransform>().position, target.transform.position, (Time.time - startTime)/overTime);
+            yield return null;
+        }
+        yield return new WaitForSeconds(1);
+        startTime = Time.time;
+        while(Time.time < startTime + overTime)
+        {
+            
+            messageObj.transform.position = Vector3.Lerp(messageObj.GetComponent<RectTransform>().position, sourcePos, (Time.time - startTime)/overTime);
+            yield return null;
+        }
+
+        
+        messageObj.transform.position = sourcePos;
+        Debug.Log("DoNE");
+
+
     }
 
 

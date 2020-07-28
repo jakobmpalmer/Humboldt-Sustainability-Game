@@ -54,22 +54,44 @@ public class CardHover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 
     public void OnEndDrag(PointerEventData eventData){
         //Debug.Log("End Drag");
-        RectTransform gameBoard = GameObject.Find("GameBoard").GetComponent<RectTransform>();
+        GameObject gameBoardObj = GameObject.Find("GameBoard");
+        GameBoardScript gameBoardScpt = gameBoardObj.GetComponent<GameBoardScript>();
+        RectTransform gameBoard = gameBoardObj.GetComponent<RectTransform>();
         //Debug.Log("GameBoard Position:: " + gameBoard.transform.position.x + ", " + gameBoard.transform.position.y);
         //Debug.Log("LocalPosition:: " + gameBoard.transform.localPosition.x + ", " + gameBoard.transform.localPosition.y);
 
          if (RectTransformUtility.RectangleContainsScreenPoint(gameBoard.GetComponent<RectTransform>(), Input.mousePosition, Camera.main))
         //if (RectTransformUtility.RectangleContainsScreenPoint(gameBoard, Input.mousePosition))
         {   
+
             Debug.Log("Dropped on board.");
             Debug.Log("GameBoard Position:: " + gameBoard.transform.position.x + ", " + gameBoard.transform.position.y);
             Debug.Log("LocalPosition:: " + gameBoard.transform.localPosition.x + ", " + gameBoard.transform.localPosition.y);
-            
-            Debug.Log(this.transform.position.x + ", " + this.transform.position.y + " |VS| loc: " + this.transform.localPosition.x + ", " + this.transform.localPosition.y);
-            this.transform.SetParent(gameBoard.transform, false);
-            //GetComponent<CardHover>().enabled = false;
-            //this.transform.position = new Vector3(-1 * gameBoard.sizeDelta.x / 2, 0, 0);
-            this.enabled = false;
+
+            if(GetComponent<CardDisplay>().CanPlay()){
+                Debug.Log("Can Play!");
+                
+                Debug.Log(this.transform.position.x + ", " + this.transform.position.y + " |VS| loc: " + this.transform.localPosition.x + ", " + this.transform.localPosition.y);
+                
+                //GetComponent<CardHover>().enabled = false;
+                //this.transform.position = new Vector3(-1 * gameBoard.sizeDelta.x / 2, 0, 0);
+                
+                // GetComponent<CardDisplay>().MoveOverTime(gameObject, GameObject.Find("GameBoard"), 1.0f);
+                // this.transform.SetParent(gameBoard.transform, false);
+                // Debug.Log("Resize.. begun");
+                // GetComponent<CardDisplay>().ResizeThisCard(2.0f);
+                // Debug.Log("Resize.. complete");
+                // GetComponent<CardDisplay>().StackOnBoard(gameObject, GameObject.Find("GameBoard"), 1.0f);
+                // Debug.Log("-----> MOVED");    
+                GetComponent<CardDisplay>().PlayCard();        
+                //this.enabled = false;
+                Destroy(this);
+                Debug.Log("THIS SHOULD NEVER PRINT. Enabled = false");
+            } else {
+                Debug.Log("Cannot play...");
+                GameObject.Find("GameMaster").GetComponent<GameScript>().ShowErrorMessage("Not Enough Resources!", 1.0f);
+                this.transform.position = startingPos;
+            }
         } else {
             // this.transform.localPosition = startingPos;
             this.transform.position = startingPos;

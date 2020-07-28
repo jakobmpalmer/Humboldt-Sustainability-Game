@@ -17,9 +17,12 @@ public class GameSetup : MonoBehaviour
     public GameObject namingPanel;
     public GameObject sessionNames;
     public GameObject playerEntry;
+    public Text playerBankText;
     public Button submitBtn;
 
     public GameObject bankArea;
+
+    bool namesSet;
 
 
 
@@ -28,6 +31,7 @@ public class GameSetup : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        namesSet = false;
         playersGroup = GameObject.Find("Players");
         setupCanva = GameObject.Find("GameSetupCanvas");
         setupCanva.SetActive(true);
@@ -142,7 +146,11 @@ public class GameSetup : MonoBehaviour
 
     void SubmitBtn(){     
          Debug.Log("About to setup player names")    ;
-         SetPlayerNames();
+         namesSet = SetPlayerNames();
+         if(!namesSet){
+            Debug.Log("Error with a name. Please try again.");
+            return;
+         }
          Debug.Log("Set Player Names Complete.");
          GetComponent<GameScript>().enabled = (true);
          namingPanel.SetActive(false);
@@ -176,36 +184,41 @@ public class GameSetup : MonoBehaviour
     }
 
     void GetPlayerNames(int num){
-        float yOff = playerEntry.GetComponent<RectTransform>().rect.height /2 + 25;//* namingPanel.GetComponentInParent<Canvas>().transform.localScale.y / 2;
+        float yOff = playerEntry.GetComponent<RectTransform>().rect.height; ///2 + 25;//* namingPanel.GetComponentInParent<Canvas>().transform.localScale.y / 2;
         float xOff = namingPanel.transform.GetChild(0).GetComponent<RectTransform>().rect.width / 4;;
         bool offset = false;
         int j = 0;
         if(num >= 4){
             offset = true;
-            namingPanel.transform.GetChild(0).GetComponent<RectTransform>().sizeDelta = new Vector2(namingPanel.transform.GetChild(0).GetComponent<RectTransform>().rect.width + 150, namingPanel.transform.GetChild(0).GetComponent<RectTransform>().sizeDelta.y);
+            //namingPanel.transform.GetChild(0).GetComponent<RectTransform>().sizeDelta = new Vector2(namingPanel.transform.GetChild(0).GetComponent<RectTransform>().rect.width + 150, namingPanel.transform.GetChild(0).GetComponent<RectTransform>().sizeDelta.y);
         }
         
         Vector3 spawnLoc;
         GameObject player;
+        GameObject columnOne = GameObject.Find("InputColumnOne");
+        GameObject columnTwo = GameObject.Find("InputColumnTwo");
         for (int i = 0; i < num; i++)
         {           
                 //xOff = namingPanel.transform.GetChild(0).GetComponent<RectTransform>().rect.width / 4;
             
                 //xOff = -1 * namingPanel.transform.GetChild(0).GetComponent<RectTransform>().rect.width / 4;
             
-
+            
 
             if(offset){
                 if(i > 4){
-                    spawnLoc = new Vector3(namingPanel.transform.position.x + xOff, namingPanel.transform.position.y+ 85 - (yOff * j), namingPanel.transform.position.z);
+                    //spawnLoc = new Vector3(namingPanel.transform.position.x + xOff, namingPanel.transform.position.y+ 85 + (yOff * j), namingPanel.transform.position.z);
+                    spawnLoc = new Vector3(columnTwo.transform.position.x , columnTwo.transform.position.y- (yOff * j), columnTwo.transform.position.z);
                     j++;
                 } else if(i == 4){
                     j = 0;
-                    spawnLoc = new Vector3(namingPanel.transform.position.x + xOff, namingPanel.transform.position.y+ 85 - (yOff * j), namingPanel.transform.position.z);
+                    //spawnLoc = new Vector3(namingPanel.transform.position.x + xOff, namingPanel.transform.position.y+ 85 + (yOff * j), namingPanel.transform.position.z);
+                    spawnLoc = new Vector3(columnTwo.transform.position.x, columnTwo.transform.position.y- (yOff * j), columnTwo.transform.position.z);
                     j++;
                 } else{
-                    spawnLoc = new Vector3(namingPanel.transform.position.x - xOff, namingPanel.transform.position.y+ 85 - (yOff * j), namingPanel.transform.position.z);
-                    j++;
+                    //spawnLoc = new Vector3(namingPanel.transform.position.x - xOff, namingPanel.transform.position.y+ 85 - (yOff * i), namingPanel.transform.position.z);
+                    spawnLoc = new Vector3(columnOne.transform.position.x, columnOne.transform.position.y- (yOff * i), columnOne.transform.position.z);
+                    //j++;
                 }
 
             } else {
@@ -221,20 +234,43 @@ public class GameSetup : MonoBehaviour
 
     }
 
-    void SetPlayerNames(){
+    bool SetPlayerNames(){
+
+        
+
         Debug.Log("Finding child components");
         //RectTransform[] playerNames = sessionNames.gameObject.GetComponents<RectTransform>();
         InputField[] playerNames = sessionNames.gameObject.GetComponentsInChildren<InputField>();
         Debug.Log("Got player Names.. " + playerNames.Length);
+
+        if(playerNames.Length > 4){
+            bankArea.GetComponent<RectTransform>().sizeDelta = new Vector2(400, 138);
+            bankArea.transform.localPosition = new Vector2(bankArea.transform.localPosition.x -100 ,bankArea.transform.localPosition.y);
+        }
+
+        Transform textSpawnPos = GameObject.Find("PlayerTextSpawn").transform;
         for (int i = 0; i < playerNames.Length; i++)
         {   
             //Debug.Log("Setting player " + i+ " to " + playerNames[i].GetComponentInChildren<InputField>().text);
             //players[i].GetComponent<PlayerScript>().name = playerNames[i].GetComponent<InputField>().text;
-
+            if((playerNames[i].text == "") || (playerNames[i].text == null)){
+                Debug.Log("This name right here, officer. +" + i);
+                return false;
+            }
             Debug.Log("Setting player " + i+ " to " + playerNames[i].text);
             players[i].GetComponent<PlayerScript>().name = playerNames[i].text;
-            bankArea.transform.GetChild(i).GetComponent<Text>().text = players[i].name + ": " + players[i].GetComponent<PlayerScript>().money;
+            Text playerTextObj = Instantiate(playerBankText, 
+                                             new Vector2(textSpawnPos.localPosition.x, textSpawnPos.localPosition.y - (playerBankText.GetComponent<RectTransform>().rect.height * i)), 
+                                             transform.rotation) as Text;
+                 //Parent to the panel
+                  playerTextObj.transform.SetParent(bankArea.transform, false);
+                  //Set the text box's text element font size and style:
+                   //playerTextObj.fontSize = defaultFontSize;
+                   //Set the text box's text element to the current textToDisplay:
+                   playerTextObj.text = players[i].name + ": " + players[i].GetComponent<PlayerScript>().money;
+            //bankArea.transform.GetChild(i).GetComponent<Text>().text = players[i].name + ": " + players[i].GetComponent<PlayerScript>().money;
         }
+        return true;
     }
 
 }

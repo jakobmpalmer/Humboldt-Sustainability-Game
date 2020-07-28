@@ -8,10 +8,13 @@ public class GameBoardScript : MonoBehaviour
 
     [SerializeField] GameObject gameboardBorder;
     public GameObject currentCard;
+    public GameObject lastPlayed;
     // Start is called before the first frame update
     void Start()
     {
-        currentCard = GameObject.Find("firstCard");
+        //currentCard = GameObject.Find("firstCard");
+        currentCard = null;
+        lastPlayed = GameObject.Find("FirstCardSpot");
     }
 
     // Update is called once per frame
@@ -23,17 +26,15 @@ public class GameBoardScript : MonoBehaviour
     void OnMouseEnter() {
         //If your mouse hovers over the GameObject with the script attached, output this message
         Debug.Log("Mouse is over GameBoard.");
-        Debug.Log("XY" + currentCard.transform.position.x);
-        //GetComponent<RectTransform>().localScale = new Vector3(1.5f, 1.5f, 0f);
-        //this.gameObject.transform.GetChild(0).GetComponent<Image>().color = Color.yellow;
-        // if (RectTransformUtility.RectangleContainsScreenPoint(GetComponent<RectTransform>(),
-        //                                                              new Vector2(currentCard.transform.position.x, currentCard.transform.position.y),
-        //                                                              Camera.main)){
-        if (Vector3.Distance(currentCard.transform.position, this.transform.position) < 91){
+        
+        if ((currentCard != null) && (Vector3.Distance(currentCard.transform.position, this.transform.position) < 91)){
         //if(GameObject.Find("card-template(Clone)").GetComponent<CardDisplay>().selected){
+            Debug.Log("Current card over gameboard");
             gameboardBorder.GetComponent<Image>().color = Color.yellow;
+            //lastPlayed = currentCard;
+            // currentCard = null;
         } else{
-            Debug.Log(Vector3.Distance(currentCard.transform.position, this.transform.position) + " hereee");
+            //Debug.Log(Vector3.Distance(currentCard.transform.position, this.transform.position) + " hereee");
         }
     }
 

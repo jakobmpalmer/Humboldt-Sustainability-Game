@@ -10,14 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 408a4733e1fa14aadaaa3195c1e449b2, type: 3}
-  m_Name: green_card_3
+  m_Name: pink_card_3
   m_EditorClassIdentifier: 
-  cardName: Mediterranean Diet (Red meat 1-2x a month, daily veg/chicken/fish)
-  cardType: 0
-  price: 0
-  co2e: 131000
-  energy: 0
+  cardName: Wood stoves to Heat Pumps
+  cardType: 2
+  price: 27000000
+  co2e: 98000
+  energy: 25000
   costs: 0
-  description: 131,000 Tons ($0/ton C02e)
-  secret: $360 million over 10 years due to avoided diabetes, heart disease, cancer,
-    Alzheimers and hip fracture.
+  description: 98,000 Tons ($273/ton CO2e)
+  secret: Saves $59 milion on fuel costs.

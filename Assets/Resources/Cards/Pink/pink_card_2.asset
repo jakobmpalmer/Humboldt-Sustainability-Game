@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 408a4733e1fa14aadaaa3195c1e449b2, type: 3}
-  m_Name: green_card_3
+  m_Name: pink_card_2
   m_EditorClassIdentifier: 
-  cardName: Mediterranean Diet (Red meat 1-2x a month, daily veg/chicken/fish)
+  cardName: Hot Water Heat Pumps
   cardType: 0
-  price: 0
-  co2e: 131000
-  energy: 0
+  price: 14700000
+  co2e: 68000
+  energy: 65000
   costs: 0
-  description: 131,000 Tons ($0/ton C02e)
-  secret: $360 million over 10 years due to avoided diabetes, heart disease, cancer,
-    Alzheimers and hip fracture.
+  description: 68,000 Tons ($216/ton CO2e)
+  secret: Save   switching from propane     $29 million<newline>Cost   switching
+    from natural gas    $61 million.

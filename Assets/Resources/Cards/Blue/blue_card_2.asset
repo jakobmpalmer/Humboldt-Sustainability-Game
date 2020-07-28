@@ -15,8 +15,8 @@ MonoBehaviour:
   cardName: Four Day Office Week 1 in 5 workers
   cardType: 1
   price: 0
-  co2e: 0
+  co2e: 27000
   energy: 0
-  saves: 0
+  costs: 0
   description: 27, 000 Tons C02e.
   secret: Saves in office overhead and car travel

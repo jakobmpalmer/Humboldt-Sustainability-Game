@@ -9,10 +9,10 @@ public class Card : ScriptableObject
     public string cardName;
     public int cardType; // 0 = green, 1 == blue
 
-    public int price;
-    public int co2e;
-    public int energy;
-    public bool saves;
+    public float price;
+    public float co2e;
+    public float energy;
+    public bool costs;
     public string description;
     public string secret;
 
