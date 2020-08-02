@@ -237,7 +237,8 @@ public class GameSetup : MonoBehaviour
     bool SetPlayerNames(){
 
         
-
+        int xOffset = 0;
+        int j = 0;
         Debug.Log("Finding child components");
         //RectTransform[] playerNames = sessionNames.gameObject.GetComponents<RectTransform>();
         InputField[] playerNames = sessionNames.gameObject.GetComponentsInChildren<InputField>();
@@ -251,6 +252,10 @@ public class GameSetup : MonoBehaviour
         Transform textSpawnPos = GameObject.Find("PlayerTextSpawn").transform;
         for (int i = 0; i < playerNames.Length; i++)
         {   
+            if(i == 4){
+                xOffset = 1;
+                j = 0;
+            }
             //Debug.Log("Setting player " + i+ " to " + playerNames[i].GetComponentInChildren<InputField>().text);
             //players[i].GetComponent<PlayerScript>().name = playerNames[i].GetComponent<InputField>().text;
             if((playerNames[i].text == "") || (playerNames[i].text == null)){
@@ -260,8 +265,10 @@ public class GameSetup : MonoBehaviour
             Debug.Log("Setting player " + i+ " to " + playerNames[i].text);
             players[i].GetComponent<PlayerScript>().name = playerNames[i].text;
             Text playerTextObj = Instantiate(playerBankText, 
-                                             new Vector2(textSpawnPos.localPosition.x, textSpawnPos.localPosition.y - (playerBankText.GetComponent<RectTransform>().rect.height * i)), 
+                                             new Vector2(textSpawnPos.localPosition.x + (xOffset * playerBankText.GetComponent<RectTransform>().rect.width), 
+                                             textSpawnPos.localPosition.y - (playerBankText.GetComponent<RectTransform>().rect.height * j)), 
                                              transform.rotation) as Text;
+            j++;
                  //Parent to the panel
                   playerTextObj.transform.SetParent(bankArea.transform, false);
                   //Set the text box's text element font size and style:

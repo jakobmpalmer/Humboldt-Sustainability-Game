@@ -15,7 +15,7 @@ public class CardDisplay : MonoBehaviour
 
     public bool selected;
     float cardPrice;
-    float energyCost;
+    int energyCost;
     bool canPlay;
     public GameObject gameMaster;
     GameScript gameScript;
@@ -30,7 +30,7 @@ public class CardDisplay : MonoBehaviour
         //this.gameObject.image.color = new Color32(255,255,255,0);
         nameText.text = card.cardName;
         descriptionText.text = card.description;
-        priceText.text = cardPrice.ToString();
+        priceText.text = "$" + cardPrice.ToString();
         cardType = card.cardType;
         gameMaster = GameObject.Find("GameMaster");
         gameScript = gameMaster.GetComponent<GameScript>();
@@ -63,17 +63,42 @@ public class CardDisplay : MonoBehaviour
 
     public bool CanPlay()
     {
-            float playerMoney = GetComponentInParent<PlayerScript>().money;
-//            int totalEnergy = GetComponentInParent<GameScript>().energy;
-        //     if(GetComponent<GameScript>().currentPlayer.GetComponent<PlayerScript>()){
-        // if((playerMoney > cardPrice) && (totalEnergy > energyCost)){
-        if((playerMoney > cardPrice) ){
-                Debug.Log(playerMoney + " - " + cardPrice + " = " + (playerMoney - cardPrice));
-                playerMoney -= cardPrice;
+        float playerMoney = GetComponentInParent<PlayerScript>().money;
+        int gameEnergy = gameScript.energy;
+
+        if(CheckMoney(playerMoney)){
+            if(CheckEnergy(gameEnergy)){                
+                return true;
+            } else {print("Cant, energy too low");}
+        }else {print("Cant, money too low");}
+        return false;
+    }
+
+    bool CheckMoney(float thisMoney){
+        //float playerMoney = GetComponentInParent<PlayerScript>().money;
+        if((thisMoney >= cardPrice) ){
+                Debug.Log("MoneyUpdate: " + thisMoney + " - " + cardPrice + " = " + (thisMoney - cardPrice));
+                //playerMoney -= cardPrice;
                 //totalEnergy -= energyCost;                
-                canPlay = true;
+                return true;
         }
-        return canPlay;
+        return false;
+    }
+    bool CheckEnergy(int thisEnergy){
+        
+        if((thisEnergy >= energyCost) ){
+                Debug.Log("EnergyUpdate: " + thisEnergy + " - " + energyCost + " = " + (thisEnergy - energyCost));
+                //gameEnergy -= energyCost;
+                //totalEnergy -= energyCost;                
+                return true;
+        }
+        Debug.Log("ENERGY BREAK->->->: " + thisEnergy + " - " + energyCost + " = " + (thisEnergy - energyCost));
+        return false;
+    }
+
+    public void SubtractResources(){
+        gameScript.energy -= energyCost;
+        GetComponentInParent<PlayerScript>().money -= cardPrice;
     }
 
     public void PlayCard(){        
@@ -128,7 +153,8 @@ public class CardDisplay : MonoBehaviour
             yield return null;
             //yield return new WaitForSeconds(1);
         }
-        source.transform.SetParent(gameScript.currentPlayer.transform.GetChild(0), true);
+        //source.transform.SetParent(gameScript.currentPlayer.transform.GetChild(0), true);
+        source.transform.SetParent(gameScript.currentPlayer.transform, true);
 
         Debug.Log("Setting interactable true");
         GameObject.Find("GameUI").GetComponent<GameUI>().nextTurnButton.interactable = true;  

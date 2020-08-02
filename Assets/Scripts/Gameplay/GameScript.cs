@@ -32,7 +32,7 @@ public class GameScript : MonoBehaviour
 
     public GameObject bankArea;
 
-    bool DEBUG = true;
+    //bool DEBUG = true;
     public int energy;
 
     public float currentCo2e;
@@ -56,10 +56,10 @@ public class GameScript : MonoBehaviour
         playersList = new GameObject[numPlayers];
         for (int i = 0; i < numPlayers; i++)
         {
-            playersList[i] = players.transform.GetChild(i).gameObject;
+            playersList[i] = players.transform.GetChild(i).gameObject;            
             //bankArea.transform.GetChild(i).GetComponent<Text>().text = playersList[i].GetComponent<PlayerScript>().name;
         }
-        currentPlayer = playersList[0];
+        currentPlayer = playersList[0];        
         currentPlayer.GetComponent<PlayerScript>().canPlay = true;
         nextPlayerNum = 1;
         
@@ -71,6 +71,12 @@ public class GameScript : MonoBehaviour
 
     }
 
+    // public void DealCards(){
+    //     for(int i = 0; i < numPlayers; i++){
+            
+    //     }
+    // }
+
 //Invoked on button click
     public void DrawCards(Transform newParent, int num){
         for (int i = 0; i < num; i++)
@@ -80,9 +86,17 @@ public class GameScript : MonoBehaviour
             Debug.Log("your random: " + rand);
             
             cardPrefab = Instantiate(cardTemplate, new Vector3(i * 200.0F, i * -25, 0), Quaternion.identity);
-            cardPrefab.transform.SetParent(newParent, false);
+            cardPrefab.transform.SetParent(newParent, false); // Parents card to gameUI to make it visible on spawn.
             //cardPrefab.transform.SetParent(currentPlayer.transform.GetChild(0), true);
             // cardPrefab.GetComponent<CardDisplay>().card = cardObject;
+            if((cardDeck[rand].price <= 10000000) || (cardDeck[rand].energy > 0)){
+                Debug.Log("Must reroll..");
+                while((cardDeck[rand].price <= 10000000) && (cardDeck[rand].energy > 0)){
+                    Debug.Log("\tTrying " + rand);
+                    rand = Random.Range(0, cardDeck.Count);
+                }
+                Debug.Log("Worked! with, " + rand);
+            }
             cardPrefab.GetComponent<CardDisplay>().card = cardDeck[rand];
             cardPrefab.GetComponent<CardDisplay>().nameText = cardPrefab.GetComponentsInChildren<Text>()[0];
             cardPrefab.GetComponent<CardDisplay>().descriptionText = cardPrefab.GetComponentsInChildren<Text>()[2];
@@ -202,7 +216,7 @@ public class GameScript : MonoBehaviour
         //GameObject.Find("GameMaster").GetComponent<GameScript>().ShowErrorMessage("Not Enough Resources!", 1.0f);        
         ShowSlideMessage(currentPlayer.name + "'s Turn!", "PlayerTurnTitle", "PlayerTitleDest", 1.0f);
         IEnumerator playerTurnCoroutine = ShowPlayerTurn(2);
-            StartCoroutine(playerTurnCoroutine);
+        StartCoroutine(playerTurnCoroutine);
     }
 
     IEnumerator ShowPlayerTurn(float showFor)
@@ -229,16 +243,14 @@ public class GameScript : MonoBehaviour
         
         float startTime = Time.time;
         while(Time.time < startTime + overTime)
-        {
-            
+        {            
             messageObj.transform.position = Vector3.Lerp(messageObj.GetComponent<RectTransform>().position, target.transform.position, (Time.time - startTime)/overTime);
             yield return null;
         }
         yield return new WaitForSeconds(1);
         startTime = Time.time;
         while(Time.time < startTime + overTime)
-        {
-            
+        {            
             messageObj.transform.position = Vector3.Lerp(messageObj.GetComponent<RectTransform>().position, sourcePos, (Time.time - startTime)/overTime);
             yield return null;
         }
@@ -246,7 +258,6 @@ public class GameScript : MonoBehaviour
         
         messageObj.transform.position = sourcePos;
         Debug.Log("DoNE");
-
 
     }
 

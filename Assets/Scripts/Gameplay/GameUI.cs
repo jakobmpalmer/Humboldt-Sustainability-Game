@@ -22,9 +22,13 @@ public class GameUI : MonoBehaviour
     public Text inspectDisp;
     public Button nextTurnButton;
 
+    public GameObject bankDisplay;
+
     public Text Co2eDisplay;
+    int turnNum;
 
     public void Start(){
+        turnNum = 1;
         //gameMaster = GameObject.Find("GameMaster");
         gameScript = gameMaster.GetComponent<GameScript>();
         gameTimer = GameObject.Find("Timer");
@@ -38,18 +42,25 @@ public class GameUI : MonoBehaviour
 
     }
 
+    void DealCards(int numCards){
+        gameScript.DrawCards(this.transform, numCards);
+    }
+
     void DrawCards(){
             
             string buttonName = this.name;
             Debug.Log ("You have clicked the " + buttonName + " button!");
             
             gameScript.DrawCards(this.transform, 1);
+            //gameScript.currentPlayer.GetComponent<PlayerScript>().DrawCards(this.transform, 1);
             Debug.Log("Drew Cards...");
             nextTurnButton.interactable = false;  
 	}
 
     void EndTurn(){
         gameScript.EndTurn();
+        if(turnNum < gameScript.numPlayers){DealCards(3);}
+        turnNum++;
     }
 
     void PausePlay(){
@@ -80,6 +91,13 @@ public class GameUI : MonoBehaviour
 
     public void UpdateCo2e(){
         Co2eDisplay.text = gameScript.currentCo2e.ToString();
+    }
+
+    public void UpdateBank(){
+        Text[] bankTexts = bankDisplay.GetComponentsInChildren<Text>();
+        for(int i = 0; i < gameScript.numPlayers;i++){
+            bankTexts[i].text = gameScript.playersList[i].GetComponent<PlayerScript>().money.ToString();
+        }
     }
 
 }
