@@ -184,8 +184,9 @@ public class GameSetup : MonoBehaviour
     }
 
     void GetPlayerNames(int num){
-        float yOff = playerEntry.GetComponent<RectTransform>().rect.height; ///2 + 25;//* namingPanel.GetComponentInParent<Canvas>().transform.localScale.y / 2;
-        float xOff = namingPanel.transform.GetChild(0).GetComponent<RectTransform>().rect.width / 4;;
+        float yOff = (playerEntry.GetComponent<RectTransform>().rect.height + 25) * namingPanel.GetComponentInParent<Canvas>().transform.localScale.y; ///2 + 25;//* namingPanel.GetComponentInParent<Canvas>().transform.localScale.y / 2;
+        //float yOff = namingPanel.GetComponentInParent<Canvas>().transform.localScale.y / num;
+        float xOff = namingPanel.transform.GetChild(0).GetComponent<RectTransform>().rect.width / 4;
         bool offset = false;
         int j = 0;
         if(num >= 4){
@@ -208,16 +209,16 @@ public class GameSetup : MonoBehaviour
             if(offset){
                 if(i > 4){
                     //spawnLoc = new Vector3(namingPanel.transform.position.x + xOff, namingPanel.transform.position.y+ 85 + (yOff * j), namingPanel.transform.position.z);
-                    spawnLoc = new Vector3(columnTwo.transform.position.x , columnTwo.transform.position.y- (yOff * j), columnTwo.transform.position.z);
+                    spawnLoc = new Vector3(columnTwo.transform.position.x , columnTwo.transform.position.y - (yOff * j), columnTwo.transform.position.z);
                     j++;
                 } else if(i == 4){
                     j = 0;
                     //spawnLoc = new Vector3(namingPanel.transform.position.x + xOff, namingPanel.transform.position.y+ 85 + (yOff * j), namingPanel.transform.position.z);
-                    spawnLoc = new Vector3(columnTwo.transform.position.x, columnTwo.transform.position.y- (yOff * j), columnTwo.transform.position.z);
+                    spawnLoc = new Vector3(columnTwo.transform.position.x, columnTwo.transform.position.y - (yOff * j), columnTwo.transform.position.z);
                     j++;
                 } else{
                     //spawnLoc = new Vector3(namingPanel.transform.position.x - xOff, namingPanel.transform.position.y+ 85 - (yOff * i), namingPanel.transform.position.z);
-                    spawnLoc = new Vector3(columnOne.transform.position.x, columnOne.transform.position.y- (yOff * i), columnOne.transform.position.z);
+                    spawnLoc = new Vector3(columnOne.transform.position.x, columnOne.transform.position.y - (yOff * i), columnOne.transform.position.z);
                     //j++;
                 }
 

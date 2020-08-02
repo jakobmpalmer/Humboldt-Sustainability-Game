@@ -63,7 +63,7 @@ public class CardDisplay : MonoBehaviour
 
     public bool CanPlay()
     {
-        float playerMoney = GetComponentInParent<PlayerScript>().money;
+        float playerMoney = gameScript.currentPlayer.GetComponent<PlayerScript>().money;
         int gameEnergy = gameScript.energy;
 
         if(CheckMoney(playerMoney)){
@@ -82,6 +82,7 @@ public class CardDisplay : MonoBehaviour
                 //totalEnergy -= energyCost;                
                 return true;
         }
+        Debug.Log("MONEY BREAK ->->->: " + thisMoney + " - " + cardPrice + " = " + (thisMoney - cardPrice));
         return false;
     }
     bool CheckEnergy(int thisEnergy){
@@ -153,8 +154,8 @@ public class CardDisplay : MonoBehaviour
             yield return null;
             //yield return new WaitForSeconds(1);
         }
-        //source.transform.SetParent(gameScript.currentPlayer.transform.GetChild(0), true);
-        source.transform.SetParent(gameScript.currentPlayer.transform, true);
+        source.transform.SetParent(gameScript.currentPlayer.transform.GetChild(0), true);
+        //source.transform.SetParent(gameScript.currentPlayer.transform, true);
 
         Debug.Log("Setting interactable true");
         GameObject.Find("GameUI").GetComponent<GameUI>().nextTurnButton.interactable = true;  
