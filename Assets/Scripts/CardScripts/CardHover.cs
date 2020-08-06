@@ -9,6 +9,12 @@ public class CardHover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     public Vector2 startingPos;
 
     public Color prevCardColor;
+
+    GameObject thisCardDisplay;
+
+    // void Start(){
+    //     thisCardDisplay = GetComponent<CardDisplay>();
+    // }
     void OnMouseEnter() {
         //If your mouse hovers over the GameObject with the script attached, output this message
         Debug.Log("Mouse is over GameObject.");
@@ -68,9 +74,14 @@ public class CardHover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
             Debug.Log("GameBoard Position:: " + gameBoard.transform.position.x + ", " + gameBoard.transform.position.y);
             Debug.Log("LocalPosition:: " + gameBoard.transform.localPosition.x + ", " + gameBoard.transform.localPosition.y);
 
+            //if(GetComponent<CardDisplay>().CheckEnergy() && GetComponent<CardDisplay>().CheckMoney()){
             if(GetComponent<CardDisplay>().CanPlay()){
                 Debug.Log("Can Play!");
-                
+                // Debug.Log(playerMoney + " - " + cardPrice + " = " + (playerMoney - cardPrice));
+                //  Debug.Log(playerMoney + " - " + cardPrice + " = " + (playerMoney - cardPrice));
+                //playerMoney -= cardPrice;
+                GetComponent<CardDisplay>().SubtractResources();
+
                 Debug.Log(this.transform.position.x + ", " + this.transform.position.y + " |VS| loc: " + this.transform.localPosition.x + ", " + this.transform.localPosition.y);
                 
                 //GetComponent<CardHover>().enabled = false;
@@ -83,7 +94,8 @@ public class CardHover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
                 // Debug.Log("Resize.. complete");
                 // GetComponent<CardDisplay>().StackOnBoard(gameObject, GameObject.Find("GameBoard"), 1.0f);
                 // Debug.Log("-----> MOVED");    
-                GetComponent<CardDisplay>().PlayCard();        
+                GetComponent<CardDisplay>().PlayCard();     
+                GameObject.Find("GameUI").GetComponent<GameUI>().UpdateBank();
                 //this.enabled = false;
                 Destroy(this);
                 Debug.Log("THIS SHOULD NEVER PRINT. Enabled = false");

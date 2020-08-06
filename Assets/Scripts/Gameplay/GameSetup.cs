@@ -184,8 +184,9 @@ public class GameSetup : MonoBehaviour
     }
 
     void GetPlayerNames(int num){
-        float yOff = playerEntry.GetComponent<RectTransform>().rect.height; ///2 + 25;//* namingPanel.GetComponentInParent<Canvas>().transform.localScale.y / 2;
-        float xOff = namingPanel.transform.GetChild(0).GetComponent<RectTransform>().rect.width / 4;;
+        float yOff = (playerEntry.GetComponent<RectTransform>().rect.height + 25) * namingPanel.GetComponentInParent<Canvas>().transform.localScale.y; ///2 + 25;//* namingPanel.GetComponentInParent<Canvas>().transform.localScale.y / 2;
+        //float yOff = namingPanel.GetComponentInParent<Canvas>().transform.localScale.y / num;
+        float xOff = namingPanel.transform.GetChild(0).GetComponent<RectTransform>().rect.width / 4;
         bool offset = false;
         int j = 0;
         if(num >= 4){
@@ -208,16 +209,16 @@ public class GameSetup : MonoBehaviour
             if(offset){
                 if(i > 4){
                     //spawnLoc = new Vector3(namingPanel.transform.position.x + xOff, namingPanel.transform.position.y+ 85 + (yOff * j), namingPanel.transform.position.z);
-                    spawnLoc = new Vector3(columnTwo.transform.position.x , columnTwo.transform.position.y- (yOff * j), columnTwo.transform.position.z);
+                    spawnLoc = new Vector3(columnTwo.transform.position.x , columnTwo.transform.position.y - (yOff * j), columnTwo.transform.position.z);
                     j++;
                 } else if(i == 4){
                     j = 0;
                     //spawnLoc = new Vector3(namingPanel.transform.position.x + xOff, namingPanel.transform.position.y+ 85 + (yOff * j), namingPanel.transform.position.z);
-                    spawnLoc = new Vector3(columnTwo.transform.position.x, columnTwo.transform.position.y- (yOff * j), columnTwo.transform.position.z);
+                    spawnLoc = new Vector3(columnTwo.transform.position.x, columnTwo.transform.position.y - (yOff * j), columnTwo.transform.position.z);
                     j++;
                 } else{
                     //spawnLoc = new Vector3(namingPanel.transform.position.x - xOff, namingPanel.transform.position.y+ 85 - (yOff * i), namingPanel.transform.position.z);
-                    spawnLoc = new Vector3(columnOne.transform.position.x, columnOne.transform.position.y- (yOff * i), columnOne.transform.position.z);
+                    spawnLoc = new Vector3(columnOne.transform.position.x, columnOne.transform.position.y - (yOff * i), columnOne.transform.position.z);
                     //j++;
                 }
 
@@ -237,7 +238,8 @@ public class GameSetup : MonoBehaviour
     bool SetPlayerNames(){
 
         
-
+        int xOffset = 0;
+        int j = 0;
         Debug.Log("Finding child components");
         //RectTransform[] playerNames = sessionNames.gameObject.GetComponents<RectTransform>();
         InputField[] playerNames = sessionNames.gameObject.GetComponentsInChildren<InputField>();
@@ -251,6 +253,10 @@ public class GameSetup : MonoBehaviour
         Transform textSpawnPos = GameObject.Find("PlayerTextSpawn").transform;
         for (int i = 0; i < playerNames.Length; i++)
         {   
+            if(i == 4){
+                xOffset = 1;
+                j = 0;
+            }
             //Debug.Log("Setting player " + i+ " to " + playerNames[i].GetComponentInChildren<InputField>().text);
             //players[i].GetComponent<PlayerScript>().name = playerNames[i].GetComponent<InputField>().text;
             if((playerNames[i].text == "") || (playerNames[i].text == null)){
@@ -260,8 +266,10 @@ public class GameSetup : MonoBehaviour
             Debug.Log("Setting player " + i+ " to " + playerNames[i].text);
             players[i].GetComponent<PlayerScript>().name = playerNames[i].text;
             Text playerTextObj = Instantiate(playerBankText, 
-                                             new Vector2(textSpawnPos.localPosition.x, textSpawnPos.localPosition.y - (playerBankText.GetComponent<RectTransform>().rect.height * i)), 
+                                             new Vector2(textSpawnPos.localPosition.x + (xOffset * playerBankText.GetComponent<RectTransform>().rect.width), 
+                                             textSpawnPos.localPosition.y - (playerBankText.GetComponent<RectTransform>().rect.height * j)), 
                                              transform.rotation) as Text;
+            j++;
                  //Parent to the panel
                   playerTextObj.transform.SetParent(bankArea.transform, false);
                   //Set the text box's text element font size and style:

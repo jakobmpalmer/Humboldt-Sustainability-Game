@@ -11,7 +11,7 @@ public class Card : ScriptableObject
 
     public float price;
     public float co2e;
-    public float energy;
+    public int energy;
     public bool costs;
     public string description;
     public string secret;
