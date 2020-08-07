@@ -20,6 +20,7 @@ public class GameUI : MonoBehaviour
     public Text inspectContent;
     public Text inspectPrice;
     public Text inspectDisp;
+    public Text inspectEnergy;
     public Button nextTurnButton;
 
     public GameObject bankDisplay;
@@ -29,7 +30,7 @@ public class GameUI : MonoBehaviour
 
     public void Start(){
         turnNum = 1;
-        //gameMaster = GameObject.Find("GameMaster");
+        //gameMaster = GameObject.Find("GameMaster");        
         gameScript = gameMaster.GetComponent<GameScript>();
         gameTimer = GameObject.Find("Timer");
         // Button btn = this.GetComponent<Button>();
@@ -43,6 +44,7 @@ public class GameUI : MonoBehaviour
     }
 
     void DealCards(int numCards){
+        // gameScript.DrawCards(this.transform, numCards, 10000000);
         gameScript.DrawCards(this.transform, numCards);
     }
 
@@ -50,11 +52,15 @@ public class GameUI : MonoBehaviour
             
             string buttonName = this.name;
             Debug.Log ("You have clicked the " + buttonName + " button!");
-            
-            gameScript.DrawCards(this.transform, 1);
-            //gameScript.currentPlayer.GetComponent<PlayerScript>().DrawCards(this.transform, 1);
-            Debug.Log("Drew Cards...");
-            nextTurnButton.interactable = false;  
+            if(gameScript.cardDeck.Count >= 0){
+                gameScript.DrawCards(this.transform, 1);
+
+                //gameScript.currentPlayer.GetComponent<PlayerScript>().DrawCards(this.transform, 1);
+                Debug.Log("Drew Cards...");
+                nextTurnButton.interactable = false;  
+            } else {
+                Debug.Log("Out of cards! &*");
+            }
 	}
 
     void EndTurn(){
@@ -68,6 +74,7 @@ public class GameUI : MonoBehaviour
     }
 
     public void UpdateInspector(GameObject inspectCard){
+
         CardDisplay cardDisp = inspectCard.GetComponent<CardDisplay>();
         //inspectTitle.enabled = true;
         inspectTitle.text = cardDisp.nameText.text.ToString();        
@@ -75,6 +82,11 @@ public class GameUI : MonoBehaviour
         inspectContent.text = cardDisp.descriptionText.text.ToString();
         //inspectPrice.enabled = true;
         inspectPrice.text = cardDisp.priceText.text.ToString();
+        Debug.Log("here s " + cardDisp.energyText.text.ToString());
+        //inspectEnergy.text = cardDisp.energyText.text.ToString();
+        inspectEnergy = GameObject.Find("InspectorEnergy").GetComponent<Text>();
+        inspectEnergy.text = cardDisp.energyText.text.ToString();
+
         inspectDisp.enabled = false;
     }
 
@@ -96,7 +108,7 @@ public class GameUI : MonoBehaviour
     public void UpdateBank(){
         Text[] bankTexts = bankDisplay.GetComponentsInChildren<Text>();
         for(int i = 0; i < gameScript.numPlayers;i++){
-            bankTexts[i].text = gameScript.playersList[i].GetComponent<PlayerScript>().money.ToString();
+            bankTexts[i].text = gameScript.playersList[i].GetComponent<PlayerScript>().money.ToString("c");
         }
     }
 

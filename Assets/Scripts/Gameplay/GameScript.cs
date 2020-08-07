@@ -41,9 +41,12 @@ public class GameScript : MonoBehaviour
     public GameObject gameUIObject;
     GameUI gameUI;
 
+    public int roundNum;
+
     // Start is called before the first frame update
     void Start()
     {
+        roundNum = 1;
         //(DEBUG) : Debug.Log("") ? "NO DEBUG";
         currentCo2e = 590000f;
         gameUI = gameUIObject.GetComponent<GameUI>();
@@ -89,18 +92,28 @@ public class GameScript : MonoBehaviour
             cardPrefab.transform.SetParent(newParent, false); // Parents card to gameUI to make it visible on spawn.
             //cardPrefab.transform.SetParent(currentPlayer.transform.GetChild(0), true);
             // cardPrefab.GetComponent<CardDisplay>().card = cardObject;
-            if((cardDeck[rand].price <= 10000000) || (cardDeck[rand].energy > 0)){
-                Debug.Log("Must reroll..");
-                while((cardDeck[rand].price <= 10000000) && (cardDeck[rand].energy > 0)){
-                    Debug.Log("\tTrying " + rand);
-                    rand = Random.Range(0, cardDeck.Count);
+            if(roundNum == 1){
+            // if(dealing){
+                // if((cardDeck[rand].price <= cardPriceMax) || (cardDeck[rand].energy > 0)){
+                if(cardDeck[rand].cardType != 0){
+                    int k = 0;
+                    Debug.Log("Must reroll.. " + cardDeck[rand].cardType);
+                    // while((cardDeck[rand].price <= cardPriceMax) && (cardDeck[rand].energy > 0)){
+                    while((cardDeck[rand].cardType != 0) || (cardDeck[rand].cardType != 1)){
+                        Debug.Log(k + "." + "\tTrying " + rand);
+                        rand = Random.Range(0, cardDeck.Count);
+                        if(k == 50){ Debug.Log("Cant do it! moving on.. ");break; }
+                        k++;
+                    }
+                    Debug.Log("Worked! with, " + rand);
                 }
-                Debug.Log("Worked! with, " + rand);
             }
             cardPrefab.GetComponent<CardDisplay>().card = cardDeck[rand];
             cardPrefab.GetComponent<CardDisplay>().nameText = cardPrefab.GetComponentsInChildren<Text>()[0];
             cardPrefab.GetComponent<CardDisplay>().descriptionText = cardPrefab.GetComponentsInChildren<Text>()[2];
             cardPrefab.GetComponent<CardDisplay>().priceText = cardPrefab.GetComponentsInChildren<Text>()[1];
+            cardPrefab.GetComponent<CardDisplay>().energyText = cardPrefab.GetComponentsInChildren<Text>()[3];
+            //Debug.Log("GS energyText crteated: " + cardPrefab.GetComponent<CardDisplay>().energyText.text.ToString());
             //cardPrefab.GetComponent<CardDisplay>().cardType = gameObject.cardType;
 
             //cardDeck = RemoveCards(cardDeck, rand);
