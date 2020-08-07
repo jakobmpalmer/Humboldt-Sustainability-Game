@@ -275,7 +275,7 @@ public class GameSetup : MonoBehaviour
                   //Set the text box's text element font size and style:
                    //playerTextObj.fontSize = defaultFontSize;
                    //Set the text box's text element to the current textToDisplay:
-                   playerTextObj.text = players[i].name + ": " + players[i].GetComponent<PlayerScript>().money;
+                   playerTextObj.text = players[i].name + ": " + players[i].GetComponent<PlayerScript>().money.ToString("c");
             //bankArea.transform.GetChild(i).GetComponent<Text>().text = players[i].name + ": " + players[i].GetComponent<PlayerScript>().money;
         }
         return true;

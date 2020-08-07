@@ -12,6 +12,7 @@ public class CardDisplay : MonoBehaviour
     public Text descriptionText;
     public Text priceText;
     public Text secretText;
+    public Text energyText;
 
     public bool selected;
     float cardPrice;
@@ -25,12 +26,15 @@ public class CardDisplay : MonoBehaviour
     void Start()
     {
         gameBoard = GameObject.Find("GameBoard");
+        //energyText = GameObject.Find("InspectorEnergy").GetComponent<Text>();
         cardPrice = card.price;
         energyCost = card.energy;
+        Debug.Log("67 energycost" + energyCost);
         //this.gameObject.image.color = new Color32(255,255,255,0);
         nameText.text = card.cardName;
         descriptionText.text = card.description;
-        priceText.text = "$" + cardPrice.ToString();
+        priceText.text = cardPrice.ToString("c");
+        energyText.text = energyCost + " Mwh";
         cardType = card.cardType;
         gameMaster = GameObject.Find("GameMaster");
         gameScript = gameMaster.GetComponent<GameScript>();
@@ -203,12 +207,12 @@ public class CardDisplay : MonoBehaviour
             source.transform.position = Vector3.Lerp(source.GetComponent<RectTransform>().position,
                                                         new Vector3(
                                                                 //boardArea.transform.position.x,
-                                                                gameBoardScpt.lastPlayed.GetComponent<RectTransform>().position.x + (gameBoardScpt.lastPlayed.GetComponent<RectTransform>().sizeDelta.x),
-                                                                gameBoardScpt.lastPlayed.GetComponent<RectTransform>().position.y,
+                                                                gameBoardScpt.lastPlayed.GetComponent<RectTransform>().position.x,// + (gameBoardScpt.lastPlayed.GetComponent<RectTransform>().rect.width),
+                                                                gameBoardScpt.lastPlayed.GetComponent<RectTransform>().position.y, //+ (gameBoardScpt.lastPlayed.GetComponent<RectTransform>().rect.width),
                                                                 gameBoardScpt.lastPlayed.GetComponent<RectTransform>().position.z),
                                                                 // boardArea.transform.position.y,
                                                                 // boardArea.transform.position.z), 
-                                                        (Time.time - startTime)/overTime);
+                                                                (Time.time - startTime)/overTime);
             yield return null;
         }
         //source.transform.position = boardArea.transform.position;
@@ -238,13 +242,16 @@ public class CardDisplay : MonoBehaviour
             
             nameText.color = Color.Lerp(startColor, new Color(0,0,0,0), overTime);
             descriptionText.color = Color.Lerp(startColor, new Color(0,0,0,0), overTime);
-            priceText.color  = Color.Lerp(startColor, new Color(0,0,0,0), overTime);;
+            priceText.color  = Color.Lerp(startColor, new Color(0,0,0,0), overTime);
+            energyText.color  = Color.Lerp(startColor, new Color(0,0,0,0), overTime);;
+
             //yield return null;
             yield return new WaitForSeconds(1);
         }
         nameText.enabled = false;
         descriptionText.enabled = false;
         priceText.enabled = false;
+        energyText.enabled = false;
     }
 
 }
