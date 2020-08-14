@@ -17,9 +17,9 @@ MonoBehaviour:
   price: 0
   co2e: 143000
   energy: 280000
-  saves: 0
-  description: $950million ($6,700/ton C02e) on every home. \\n Solar Farm \\t $520
-    million ($3,600/ton C02e) on 1600 acres of brownfield and pasture.
+  costs: 0
+  description: '$950million ($6,700/ton C02e) on every home.<newline><newline>Solar
+    Farm: $520 million ($3,600/ton C02e) on 1600 acres of brownfield and pasture.'
   secret: Unknown but significant $$ for RCEA (not buying power at peak prices and
     lower payments for Resource Adequacy) and valuable pwer backup for homes and
     businesses.

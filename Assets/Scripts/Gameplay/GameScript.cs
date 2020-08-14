@@ -95,14 +95,22 @@ public class GameScript : MonoBehaviour
             if(roundNum == 1){
             // if(dealing){
                 // if((cardDeck[rand].price <= cardPriceMax) || (cardDeck[rand].energy > 0)){
-                if(cardDeck[rand].cardType != 0){
+                // if(cardDeck[rand].cardType != 0){
+                if((cardDeck[rand].cardType != 0) || (cardDeck[rand].cardType != 1)){
                     int k = 0;
                     Debug.Log("Must reroll.. " + cardDeck[rand].cardType);
                     // while((cardDeck[rand].price <= cardPriceMax) && (cardDeck[rand].energy > 0)){
                     while((cardDeck[rand].cardType != 0) || (cardDeck[rand].cardType != 1)){
-                        Debug.Log(k + "." + "\tTrying " + rand);
                         rand = Random.Range(0, cardDeck.Count);
-                        if(k == 50){ Debug.Log("Cant do it! moving on.. ");break; }
+                        if((cardDeck[rand].cardType == 0) || (cardDeck[rand].cardType == 1))
+                        { 
+                            Debug.Log("->Found it!: " + cardDeck[rand].cardType);
+                            break; 
+                        }
+                        if (k == 50) { 
+                            Debug.Log("-->Cant do it! moving on.. ");
+                            break; 
+                        }
                         k++;
                     }
                     Debug.Log("Worked! with, " + rand);

@@ -108,7 +108,7 @@ public class GameUI : MonoBehaviour
     public void UpdateBank(){
         Text[] bankTexts = bankDisplay.GetComponentsInChildren<Text>();
         for(int i = 0; i < gameScript.numPlayers;i++){
-            bankTexts[i].text = gameScript.playersList[i].GetComponent<PlayerScript>().money.ToString("c");
+            bankTexts[i].text = gameScript.playersList[i].gameObject.name + ": " + gameScript.playersList[i].GetComponent<PlayerScript>().money.ToString("c");
         }
     }
 

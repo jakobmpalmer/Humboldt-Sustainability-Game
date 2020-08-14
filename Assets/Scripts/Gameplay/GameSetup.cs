@@ -24,6 +24,9 @@ public class GameSetup : MonoBehaviour
 
     bool namesSet;
 
+    public Text moderatorTitle;
+    public Text moderatorInput;
+
 
 
 
@@ -151,12 +154,12 @@ public class GameSetup : MonoBehaviour
             Debug.Log("Error with a name. Please try again.");
             return;
          }
-         Debug.Log("Set Player Names Complete.");
+         //Debug.Log("Set Player Names Complete.");
          GetComponent<GameScript>().enabled = (true);
          namingPanel.SetActive(false);
-         Debug.Log("Set naming panel false Complete.");
+         //Debug.Log("Set naming panel false Complete.");
          setupCanva.SetActive(false);
-         Debug.Log("Set setup canva false Complete.");
+         //Debug.Log("Set setup canva false Complete.");
          this.enabled = false;
     }
 
@@ -178,7 +181,7 @@ public class GameSetup : MonoBehaviour
             deck.transform.SetParent(players[i].transform, false);
             //deck.transform.localScale = new Vector3(1,1,1);
             players[i].GetComponent<PlayerScript>().money = 10000000;            
-        }
+        }            
             GameObject.Find("Timer").GetComponent<TimerScript>().ChangeTimer();
             Debug.Log("Timer Begun");
     }
@@ -278,6 +281,7 @@ public class GameSetup : MonoBehaviour
                    playerTextObj.text = players[i].name + ": " + players[i].GetComponent<PlayerScript>().money.ToString("c");
             //bankArea.transform.GetChild(i).GetComponent<Text>().text = players[i].name + ": " + players[i].GetComponent<PlayerScript>().money;
         }
+        moderatorTitle.text = "Moderator: " + moderatorInput.text;
         return true;
     }
 

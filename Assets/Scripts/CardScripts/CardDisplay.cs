@@ -32,7 +32,8 @@ public class CardDisplay : MonoBehaviour
         Debug.Log("67 energycost" + energyCost);
         //this.gameObject.image.color = new Color32(255,255,255,0);
         nameText.text = card.cardName;
-        descriptionText.text = card.description;
+        descriptionText.text = card.description.Replace("<newline>", "\n");
+        //descriptionText.text = descriptionText.text.Replace("<tab>", "\t");
         priceText.text = cardPrice.ToString("c");
         energyText.text = energyCost + " Mwh";
         cardType = card.cardType;
@@ -51,7 +52,7 @@ public class CardDisplay : MonoBehaviour
                     Debug.Log("Card is blue!");
                     break;
             case 2: // if cardType == 2
-                    GetComponent<Image>().color = new Color(255, 153, 204, 1);
+                    GetComponent<Image>().color = new Color(255, 0, 181, 1);
                     Debug.Log("Card is Pink!");
                     break;
             case 3: // if cardType == 3
@@ -204,12 +205,14 @@ public class CardDisplay : MonoBehaviour
         float startTime = Time.time;
         while(Time.time < startTime + overTime)
         { 
-            source.transform.position = Vector3.Lerp(source.GetComponent<RectTransform>().position,
+            Debug.Log(source.GetComponent<RectTransform>().position.x + ", " + source.GetComponent<RectTransform>().position.y +  ") going to, (" + gameBoardScpt.lastPlayed.GetComponent<RectTransform>().position.x + ", " + gameBoardScpt.lastPlayed.GetComponent<RectTransform>().position.y);
+            Debug.Log("Width:SizeDelta, " + gameBoardScpt.lastPlayed.GetComponent<RectTransform>().rect.width + " :: " + gameBoardScpt.lastPlayed.GetComponent<RectTransform>().sizeDelta.x);
+            source.transform.localPosition = Vector3.Lerp(source.GetComponent<RectTransform>().localPosition,
                                                         new Vector3(
                                                                 //boardArea.transform.position.x,
-                                                                gameBoardScpt.lastPlayed.GetComponent<RectTransform>().position.x,// + (gameBoardScpt.lastPlayed.GetComponent<RectTransform>().rect.width),
-                                                                gameBoardScpt.lastPlayed.GetComponent<RectTransform>().position.y, //+ (gameBoardScpt.lastPlayed.GetComponent<RectTransform>().rect.width),
-                                                                gameBoardScpt.lastPlayed.GetComponent<RectTransform>().position.z),
+                                                                gameBoardScpt.lastPlayed.GetComponent<RectTransform>().localPosition.x + (gameBoardScpt.lastPlayed.GetComponent<RectTransform>().rect.width) + (source.GetComponent<RectTransform>().rect.width / 2),
+                                                                gameBoardScpt.lastPlayed.GetComponent<RectTransform>().localPosition.y,// - (gameBoardScpt.lastPlayed.GetComponent<RectTransform>().rect.width),
+                                                                gameBoardScpt.lastPlayed.GetComponent<RectTransform>().localPosition.z),
                                                                 // boardArea.transform.position.y,
                                                                 // boardArea.transform.position.z), 
                                                                 (Time.time - startTime)/overTime);
@@ -238,7 +241,8 @@ public class CardDisplay : MonoBehaviour
         float startTime = Time.time;
         while(Time.time < startTime + overTime)
         {
-            GetComponent<RectTransform>().localScale = Vector3.Lerp(GetComponent<RectTransform>().localScale, new Vector3(cardScale, 1f, 1f), overTime);
+             //GetComponent<RectTransform>().localScale = Vector3.Lerp(GetComponent<RectTransform>().localScale, new Vector3(cardScale, 1f, 1f), overTime);
+            GetComponent<RectTransform>().sizeDelta = Vector2.Lerp(new Vector2(GetComponent<RectTransform>().sizeDelta.x, GetComponent<RectTransform>().sizeDelta.y), new Vector2(cardScale * 100, GetComponent<RectTransform>().sizeDelta.y), overTime);
             
             nameText.color = Color.Lerp(startColor, new Color(0,0,0,0), overTime);
             descriptionText.color = Color.Lerp(startColor, new Color(0,0,0,0), overTime);
@@ -248,10 +252,15 @@ public class CardDisplay : MonoBehaviour
             //yield return null;
             yield return new WaitForSeconds(1);
         }
-        nameText.enabled = false;
-        descriptionText.enabled = false;
-        priceText.enabled = false;
-        energyText.enabled = false;
+        //nameText.enabled = false;        
+        // descriptionText.enabled = false;
+        // priceText.enabled = false;
+        // energyText.enabled = false;
+
+        nameText.gameObject.SetActive(false);
+        descriptionText.gameObject.SetActive(false);
+        priceText.gameObject.SetActive(false);
+        energyText.gameObject.SetActive(false);
     }
 
 }

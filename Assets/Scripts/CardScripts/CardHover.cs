@@ -39,11 +39,8 @@ public class CardHover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 
     public void OnBeginDrag(PointerEventData eventData){
         Debug.Log("Begin Drag");
-        Debug.Log("ThisTransform: " + this.transform.position);
-        //this.transform.SetParent(this.transform, false);
-        //startingPos = this.transform.localPosition;
+        Debug.Log("ThisTransform: " + this.transform.position);        
         startingPos = this.transform.position;
-        //offset = new Vector2(this.transform.position.x - eventData.position.x, this.transform.position.y - eventData.position.y);        
     }
 
     public void OnDrag(PointerEventData eventData){
@@ -97,6 +94,7 @@ public class CardHover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
                 GetComponent<CardDisplay>().PlayCard();     
                 GameObject.Find("GameUI").GetComponent<GameUI>().UpdateBank();
                 //this.enabled = false;
+                GetComponent<RectTransform>().localScale = new Vector3(1f, 1f, 0f);
                 Destroy(this);
                 Debug.Log("THIS SHOULD NEVER PRINT. Enabled = false");
             } else {
