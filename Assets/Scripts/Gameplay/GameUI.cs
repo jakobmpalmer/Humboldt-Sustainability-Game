@@ -23,9 +23,10 @@ public class GameUI : MonoBehaviour
     public Text inspectEnergy;
     public Button nextTurnButton;
 
-    public GameObject bankDisplay;
+    public GameObject playerTurnDisplay;
 
     public Text Co2eDisplay;
+    public Text climateActionFund;
     int turnNum;
 
     public void Start(){
@@ -65,6 +66,7 @@ public class GameUI : MonoBehaviour
 
     void EndTurn(){
         gameScript.EndTurn();
+        UpdateTurnDisplay();
         if(turnNum < gameScript.numPlayers){DealCards(3);}
         turnNum++;
     }
@@ -105,11 +107,23 @@ public class GameUI : MonoBehaviour
         Co2eDisplay.text = gameScript.currentCo2e.ToString();
     }
 
-    public void UpdateBank(){
-        Text[] bankTexts = bankDisplay.GetComponentsInChildren<Text>();
+    public void UpdateTurnDisplay(){
+        Text[] playerTurnTexts = playerTurnDisplay.GetComponentsInChildren<Text>();
+        
         for(int i = 0; i < gameScript.numPlayers;i++){
-            bankTexts[i].text = gameScript.playersList[i].gameObject.name + ": " + gameScript.playersList[i].GetComponent<PlayerScript>().money.ToString("c");
+            //GameObject playersTurnDisplay = bankDisplay.GetChild(i);
+            playerTurnTexts[i].GetComponentInChildren<Text>().text = gameScript.playersList[i].gameObject.name; //+ ": " + gameScript.playersList[i].GetComponent<PlayerScript>().money.ToString("c");
+            if(playerTurnTexts[i].text == gameScript.currentPlayer.ToString()){
+                playerTurnDisplay.GetComponentInChildren<Image>().color = new Color32(255,255,225,100);
+            } else {
+                playerTurnDisplay.GetComponentInChildren<Image>().color = new Color32(255,255,225,0);
+            }
         }
+
+    }
+
+    public void UpdateBank(){        
+        climateActionFund.text = gameScript.climateFund.ToString("c");
     }
 
 }

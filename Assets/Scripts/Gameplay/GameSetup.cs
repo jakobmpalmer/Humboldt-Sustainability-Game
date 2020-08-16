@@ -9,7 +9,7 @@ public class GameSetup : MonoBehaviour
 
     public GameObject[] players;
 
-    GameObject setupCanva;
+    public GameObject setupCanva;
     GameObject setupPanel; 
     public Button[] buttons;
     GameObject playersGroup;
@@ -21,6 +21,8 @@ public class GameSetup : MonoBehaviour
     public Button submitBtn;
 
     public GameObject bankArea;
+
+    public GameObject playerEntriesArea;
 
     bool namesSet;
 
@@ -36,7 +38,7 @@ public class GameSetup : MonoBehaviour
     {
         namesSet = false;
         playersGroup = GameObject.Find("Players");
-        setupCanva = GameObject.Find("GameSetupCanvas");
+        //setupCanva = GameObject.Find("GameSetupCanvas");
         setupCanva.SetActive(true);
         setupPanel = GameObject.Find("PlayerSetupPanel");
         setupPanel.SetActive(true);
@@ -160,6 +162,7 @@ public class GameSetup : MonoBehaviour
          //Debug.Log("Set naming panel false Complete.");
          setupCanva.SetActive(false);
          //Debug.Log("Set setup canva false Complete.");
+         GetComponent<GameScript>().DrawCards(GetComponent<GameScript>().currentPlayer.transform, 3);
          this.enabled = false;
     }
 
@@ -179,8 +182,8 @@ public class GameSetup : MonoBehaviour
             GameObject deck = new GameObject("Deck");
             Debug.Log("New Deck " + i);
             deck.transform.SetParent(players[i].transform, false);
-            //deck.transform.localScale = new Vector3(1,1,1);
-            players[i].GetComponent<PlayerScript>().money = 10000000;            
+            
+            //players[i].GetComponent<PlayerScript>().money = 10000000;            
         }            
             GameObject.Find("Timer").GetComponent<TimerScript>().ChangeTimer();
             Debug.Log("Timer Begun");
@@ -249,8 +252,10 @@ public class GameSetup : MonoBehaviour
         Debug.Log("Got player Names.. " + playerNames.Length);
 
         if(playerNames.Length > 4){
-            bankArea.GetComponent<RectTransform>().sizeDelta = new Vector2(400, 138);
-            bankArea.transform.localPosition = new Vector2(bankArea.transform.localPosition.x -100 ,bankArea.transform.localPosition.y);
+            // bankArea.GetComponent<RectTransform>().sizeDelta = new Vector2(400, 138);
+            // bankArea.transform.localPosition = new Vector2(bankArea.transform.localPosition.x -100 ,bankArea.transform.localPosition.y);
+            playerEntriesArea.GetComponent<RectTransform>().sizeDelta = new Vector2(400, 138);
+            playerEntriesArea.transform.localPosition = new Vector2(playerEntriesArea.transform.localPosition.x -100 ,playerEntriesArea.transform.localPosition.y);
         }
 
         Transform textSpawnPos = GameObject.Find("PlayerTextSpawn").transform;
@@ -274,11 +279,13 @@ public class GameSetup : MonoBehaviour
                                              transform.rotation) as Text;
             j++;
                  //Parent to the panel
-                  playerTextObj.transform.SetParent(bankArea.transform, false);
+                //   playerTextObj.transform.SetParent(bankArea.transform, false);
+                playerTextObj.transform.SetParent(playerEntriesArea.transform, false);
+                playerTextObj.text = playerTextObj.name;
                   //Set the text box's text element font size and style:
                    //playerTextObj.fontSize = defaultFontSize;
                    //Set the text box's text element to the current textToDisplay:
-                   playerTextObj.text = players[i].name + ": " + players[i].GetComponent<PlayerScript>().money.ToString("c");
+                   //playerTextObj.text = players[i].name + ": " + players[i].GetComponent<PlayerScript>().money.ToString("c");
             //bankArea.transform.GetChild(i).GetComponent<Text>().text = players[i].name + ": " + players[i].GetComponent<PlayerScript>().money;
         }
         moderatorTitle.text = "Moderator: " + moderatorInput.text;

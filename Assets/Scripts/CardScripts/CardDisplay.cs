@@ -68,7 +68,7 @@ public class CardDisplay : MonoBehaviour
 
     public bool CanPlay()
     {
-        float playerMoney = gameScript.currentPlayer.GetComponent<PlayerScript>().money;
+        float playerMoney = gameScript.climateFund;//.currentPlayer.GetComponent<PlayerScript>().money;
         int gameEnergy = gameScript.energy;
 
         if(CheckMoney(playerMoney)){
@@ -104,7 +104,8 @@ public class CardDisplay : MonoBehaviour
 
     public void SubtractResources(){
         gameScript.energy -= energyCost;
-        GetComponentInParent<PlayerScript>().money -= cardPrice;
+        gameScript.climateFund -= cardPrice;
+        //GetComponentInParent<PlayerScript>().money -= cardPrice;
     }
 
     public void PlayCard(){        

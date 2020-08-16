@@ -38,6 +38,7 @@ public class GameScript : MonoBehaviour
     public float currentCo2e;
 
     public float winningCo2e = 590000;
+    public float climateFund;
     public GameObject gameUIObject;
     GameUI gameUI;
 
@@ -46,11 +47,13 @@ public class GameScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        climateFund = 10000000f;
         roundNum = 1;
         //(DEBUG) : Debug.Log("") ? "NO DEBUG";
         currentCo2e = 590000f;
         gameUI = gameUIObject.GetComponent<GameUI>();
         gameUI.UpdateCo2e();
+        gameUI.UpdateBank();
         //DrawCards(mainCanvas.transform, 2);
         playerDeck = new List<GameObject>();
         LoadResources();
@@ -64,8 +67,7 @@ public class GameScript : MonoBehaviour
         }
         currentPlayer = playersList[0];        
         currentPlayer.GetComponent<PlayerScript>().canPlay = true;
-        nextPlayerNum = 1;
-        
+        nextPlayerNum = 1;        
     }
 
     // Update is called once per frame

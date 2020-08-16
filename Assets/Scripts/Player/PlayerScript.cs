@@ -10,7 +10,7 @@ public class PlayerScript : MonoBehaviour
 
     public string playerName;
 
-    public float money;
+    //public float money;
     public List<GameObject> playerDeck;
 
     GameObject cardTemplate;
