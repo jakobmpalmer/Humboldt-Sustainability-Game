@@ -74,6 +74,7 @@ public class GameSetup : MonoBehaviour
     }
     void SetPlayersTwo(){
         SetPlayers(2);
+        GetComponent<GameScript>().enabled = (true);
         GetComponent<GameScript>().numPlayers = 2;
         //setupCanva.SetActive(false);
         setupPanel.SetActive(false);
@@ -150,43 +151,44 @@ public class GameSetup : MonoBehaviour
     }
 
     void SubmitBtn(){     
-         Debug.Log("About to setup player names")    ;
+         //Debug.Log("About to setup player names")    ;
          namesSet = SetPlayerNames();
          if(!namesSet){
             Debug.Log("Error with a name. Please try again.");
             return;
          }
          //Debug.Log("Set Player Names Complete.");
-         GetComponent<GameScript>().enabled = (true);
+         //GetComponent<GameScript>().enabled = (true);
          namingPanel.SetActive(false);
          //Debug.Log("Set naming panel false Complete.");
          setupCanva.SetActive(false);
          //Debug.Log("Set setup canva false Complete.");
-         GetComponent<GameScript>().DrawCards(GetComponent<GameScript>().currentPlayer.transform, 3);
-         this.enabled = false;
+        // GetComponent<GameScript>().DrawCards(GetComponent<GameScript>().playersList[0].transform, 3);        
+        GetComponent<GameScript>().DrawCards(GameObject.Find("Players").transform.GetChild(0).transform, 3);
+        GameObject.Find("Timer").GetComponent<TimerScript>().ChangeTimer();
+        //Debug.Log("Timer Begun");  
+        this.enabled = false;
     }
 
     void SetPlayers(int numPlayers){
         int j;
         players = new GameObject[numPlayers];
-        Debug.Log("Setting Players");
+        //Debug.Log("Setting Players");
         for (int i = 0; i < numPlayers; i++)
         {
             j = i+1;
             players[i] = new GameObject("Player" + j);
-            Debug.Log("New Player " + i);
+            //Debug.Log("New Player " + i);
             players[i].transform.position = new Vector3 (0,0,0);
             players[i].transform.localScale = new Vector3(1,1,1);
             players[i].transform.SetParent(playersGroup.transform, false);
             players[i].AddComponent<PlayerScript>();
             GameObject deck = new GameObject("Deck");
-            Debug.Log("New Deck " + i);
+            //Debug.Log("New Deck " + i);
             deck.transform.SetParent(players[i].transform, false);
             
             //players[i].GetComponent<PlayerScript>().money = 10000000;            
-        }            
-            GameObject.Find("Timer").GetComponent<TimerScript>().ChangeTimer();
-            Debug.Log("Timer Begun");
+        }                        
     }
 
     void GetPlayerNames(int num){

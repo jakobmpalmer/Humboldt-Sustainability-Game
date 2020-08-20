@@ -15,9 +15,9 @@ MonoBehaviour:
   cardName: Mediterranean Diet (Red meat 1-2x a month, daily veg/chicken/fish)
   cardType: 0
   price: 0
+  savesInMil: 360
   co2e: 131000
   energy: 0
-  costs: 0
   description: 131,000 Tons ($0/ton C02e)
   secret: $360 million over 10 years due to avoided diabetes, heart disease, cancer,
     Alzheimers and hip fracture.

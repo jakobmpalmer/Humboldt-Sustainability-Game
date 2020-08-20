@@ -15,9 +15,11 @@ public class CardDisplay : MonoBehaviour
     public Text energyText;
 
     public bool selected;
-    float cardPrice;
-    int energyCost;
+    float cardPrice, cardSavings;
+    float energyCost;
     bool canPlay;
+    public string cardSecret;
+    public string cardDescription;
     public GameObject gameMaster;
     GameScript gameScript;
     GameBoardScript gameBoardScpt;
@@ -28,15 +30,19 @@ public class CardDisplay : MonoBehaviour
         gameBoard = GameObject.Find("GameBoard");
         //energyText = GameObject.Find("InspectorEnergy").GetComponent<Text>();
         cardPrice = card.price;
+        cardSavings = (card.savesInMil * 1000000f );
         energyCost = card.energy;
+        cardDescription = card.description.Replace("<newline>", "\n");
         Debug.Log("67 energycost" + energyCost);
         //this.gameObject.image.color = new Color32(255,255,255,0);
         nameText.text = card.cardName;
-        descriptionText.text = card.description.Replace("<newline>", "\n");
+        descriptionText.text = cardDescription;
         //descriptionText.text = descriptionText.text.Replace("<tab>", "\t");
         priceText.text = cardPrice.ToString("c");
         energyText.text = energyCost + " Mwh";
         cardType = card.cardType;
+
+        cardSecret = card.secret.Replace("<newline>", "\n");
         gameMaster = GameObject.Find("GameMaster");
         gameScript = gameMaster.GetComponent<GameScript>();
         //secretText.text = card.secret;
@@ -69,7 +75,7 @@ public class CardDisplay : MonoBehaviour
     public bool CanPlay()
     {
         float playerMoney = gameScript.climateFund;//.currentPlayer.GetComponent<PlayerScript>().money;
-        int gameEnergy = gameScript.energy;
+        float gameEnergy = gameScript.energy;
 
         if(CheckMoney(playerMoney)){
             if(CheckEnergy(gameEnergy)){                
@@ -90,7 +96,7 @@ public class CardDisplay : MonoBehaviour
         Debug.Log("MONEY BREAK ->->->: " + thisMoney + " - " + cardPrice + " = " + (thisMoney - cardPrice));
         return false;
     }
-    bool CheckEnergy(int thisEnergy){
+    bool CheckEnergy(float thisEnergy){
         
         if((thisEnergy >= energyCost) ){
                 Debug.Log("EnergyUpdate: " + thisEnergy + " - " + energyCost + " = " + (thisEnergy - energyCost));
@@ -107,6 +113,14 @@ public class CardDisplay : MonoBehaviour
         gameScript.climateFund -= cardPrice;
         //GetComponentInParent<PlayerScript>().money -= cardPrice;
     }
+    public void UpdateResources(){
+        //gameScript.energy -= energyCost;
+        gameScript.climateFund -= cardPrice;
+
+        gameScript.roundSavings += cardSavings;
+        gameScript.energySavings += energyCost;
+        //GetComponentInParent<PlayerScript>().money -= cardPrice;
+    }
 
     public void PlayCard(){        
         gameBoardScpt = gameBoard.GetComponent<GameBoardScript>();
@@ -115,7 +129,7 @@ public class CardDisplay : MonoBehaviour
         this.transform.SetParent(gameBoard.transform, false);
         StackOnBoard(gameObject, gameBoardScpt.lastPlayed, 1.0f);
         gameScript.ReduceCo2e(card.co2e);
-        Debug.Log("Reduced by " + card.co2e);
+        //Debug.Log("Reduced by " + card.co2e);
     }
 
 
@@ -139,9 +153,9 @@ public class CardDisplay : MonoBehaviour
 
         float sourceWidth = source.GetComponent<RectTransform>().sizeDelta.x;
         float destWidth = dest.GetComponent<RectTransform>().sizeDelta.x;
-        Debug.Log("Width:: " + destWidth);
+        //Debug.Log("Width:: " + destWidth);
 
-        Debug.Log("MODD" + currentSize % 3);
+        //Debug.Log("MODD" + currentSize % 3);
         int currentMod = currentSize % 3;
         float xOff = currentMod * sourceWidth / 1.5f;
 
@@ -163,9 +177,9 @@ public class CardDisplay : MonoBehaviour
         source.transform.SetParent(gameScript.currentPlayer.transform.GetChild(0), true);
         //source.transform.SetParent(gameScript.currentPlayer.transform, true);
 
-        Debug.Log("Setting interactable true");
+        //Debug.Log("Setting interactable true");
         GameObject.Find("GameUI").GetComponent<GameUI>().nextTurnButton.interactable = true;  
-        Debug.Log("Setting interactable true!");
+        //Debug.Log("Setting interactable true!");
     }
 
     public void MoveOverTime(GameObject cardPrefab, GameObject playArea, float overTime){
@@ -194,7 +208,7 @@ public class CardDisplay : MonoBehaviour
             yield return null;
         }
         source.transform.position = playerArea.transform.position;
-        Debug.Log("DoNE");
+        //Debug.Log("DoNE");
     }
 
     IEnumerator BoardStack(GameObject source, GameObject boardArea, float overTime)
@@ -206,8 +220,8 @@ public class CardDisplay : MonoBehaviour
         float startTime = Time.time;
         while(Time.time < startTime + overTime)
         { 
-            Debug.Log(source.GetComponent<RectTransform>().position.x + ", " + source.GetComponent<RectTransform>().position.y +  ") going to, (" + gameBoardScpt.lastPlayed.GetComponent<RectTransform>().position.x + ", " + gameBoardScpt.lastPlayed.GetComponent<RectTransform>().position.y);
-            Debug.Log("Width:SizeDelta, " + gameBoardScpt.lastPlayed.GetComponent<RectTransform>().rect.width + " :: " + gameBoardScpt.lastPlayed.GetComponent<RectTransform>().sizeDelta.x);
+            //Debug.Log(source.GetComponent<RectTransform>().position.x + ", " + source.GetComponent<RectTransform>().position.y +  ") going to, (" + gameBoardScpt.lastPlayed.GetComponent<RectTransform>().position.x + ", " + gameBoardScpt.lastPlayed.GetComponent<RectTransform>().position.y);
+            //Debug.Log("Width:SizeDelta, " + gameBoardScpt.lastPlayed.GetComponent<RectTransform>().rect.width + " :: " + gameBoardScpt.lastPlayed.GetComponent<RectTransform>().sizeDelta.x);
             source.transform.localPosition = Vector3.Lerp(source.GetComponent<RectTransform>().localPosition,
                                                         new Vector3(
                                                                 //boardArea.transform.position.x,

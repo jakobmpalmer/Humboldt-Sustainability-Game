@@ -5,8 +5,6 @@ using UnityEngine.UI;
 
 public class TimerScript : MonoBehaviour
 {
-
-
     float currentTime = 0f;
     float startingTime = 240f;
 
@@ -17,11 +15,15 @@ public class TimerScript : MonoBehaviour
     public string minutes, seconds;
     int timeIncrement;
 
+    public GameObject gameMaster;
+    GameScript gameScript;
+
     [SerializeField] Text countdownText;
     void Start()
     {
         paused = false;
         currentTime = startingTime;
+        gameScript = gameMaster.GetComponent<GameScript>();
     }
 
     void Update()
@@ -29,6 +31,7 @@ public class TimerScript : MonoBehaviour
         timeIncrement = paused ? 1 : 0;
         //currentTime -= 1 * Time.deltaTime;
         currentTime -= timeIncrement * Time.deltaTime;
+        
 
         min = Mathf.FloorToInt(currentTime / 60);
         sec = Mathf.FloorToInt(currentTime % 60);
@@ -51,9 +54,12 @@ public class TimerScript : MonoBehaviour
             minutes = "00";
             seconds = "00";
             timesUp = true;
+            gameScript.NextRound();
             countdownText.color = Color.red;
         } else if(currentTime <= 30){
             countdownText.color = Color.yellow;
+        } else {
+            countdownText.color = Color.white;
         }
 
         countdownText.text = minutes + ":" + seconds;
@@ -62,4 +68,9 @@ public class TimerScript : MonoBehaviour
     public void ChangeTimer(){
         paused = paused ? false : true;
     }
+
+    public void SetTime(float setTime){
+        currentTime = setTime;
+    }
+
 }

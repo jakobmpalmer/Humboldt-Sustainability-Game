@@ -15,9 +15,9 @@ MonoBehaviour:
   cardName: Bike to Work Incentives
   cardType: 1
   price: 11400000
+  savesInMil: 40
   co2e: 12000
   energy: 0
-  saves: 0
   description: Large employers Eureka/Arcata. 1 in 5 workers bike.
   secret: 'SAVES: $40 million. Employers save $4 million/year on health insurance
     and productivity. Employees each save $2,000/year on car expenses.'

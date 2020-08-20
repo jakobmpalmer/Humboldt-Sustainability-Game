@@ -15,8 +15,8 @@ MonoBehaviour:
   cardName: Smart Growth
   cardType: 1
   price: 0
+  savesInMil: 230
   co2e: 62000
   energy: 0
-  costs: 0
   description: 62,000 tons for free.
   secret: 'SAVES: $230 million in public services and resident travel costs.'

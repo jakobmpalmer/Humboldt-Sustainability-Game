@@ -11,6 +11,8 @@ public class CardHover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     public Color prevCardColor;
 
     GameObject thisCardDisplay;
+    float clickTime;
+    float prevClick;
 
     // void Start(){
     //     thisCardDisplay = GetComponent<CardDisplay>();
@@ -19,17 +21,33 @@ public class CardHover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         //If your mouse hovers over the GameObject with the script attached, output this message
         Debug.Log("Mouse is over GameObject.");
         GetComponent<RectTransform>().localScale = new Vector3(1.5f, 1.5f, 0f);
+        //GetComponent<SpriteRenderer>().sortingOrder = 10;
+        // GetComponent<CanvasRenderer>().sortingLayerName = "SortingLayerName";
+        // GetComponent<CanvasRenderer>().sortingOrder = 1;
     }
     void OnMouseExit() {
+        this.clickTime = Time.time;
+        float clickDelay = 3.0f;
+        Debug.Log("ClickTime: " + clickTime);
+        Debug.Log("PrevClick: " + clickTime);
+
+        if(clickTime - prevClick < clickDelay){
+            Debug.Log("Double clicked!");
+        }
         //The mouse is no longer hovering over the GameObject so output this message each frame
         GetComponent<RectTransform>().localScale = new Vector3(1f, 1f, 0f);
         Debug.Log("Mouse is no longer on GameObject.");
+        //GetComponent<SpriteRenderer>().sortingOrder = 0;
+        prevClick = clickTime;
     }
 
     void OnMouseDown() {
+
         this.gameObject.GetComponent<CardDisplay>().selected = true;
         GameObject.Find("GameBoard").GetComponent<GameBoardScript>().SetCurrentCard(this.gameObject);
         GameObject.Find("Canvas").GetComponent<GameUI>().UpdateInspector(this.gameObject);
+        GameObject.Find("Canvas").GetComponent<GameUI>().SetSecretStatus(false);
+        GameObject.Find("Canvas").GetComponent<GameUI>().FlipInspector();
     }
 
     void OnMouseUp() {
@@ -77,20 +95,12 @@ public class CardHover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
                 // Debug.Log(playerMoney + " - " + cardPrice + " = " + (playerMoney - cardPrice));
                 //  Debug.Log(playerMoney + " - " + cardPrice + " = " + (playerMoney - cardPrice));
                 //playerMoney -= cardPrice;
-                GetComponent<CardDisplay>().SubtractResources();
+                
+                //GetComponent<CardDisplay>().SubtractResources();
+                GetComponent<CardDisplay>().UpdateResources();
 
                 Debug.Log(this.transform.position.x + ", " + this.transform.position.y + " |VS| loc: " + this.transform.localPosition.x + ", " + this.transform.localPosition.y);
-                
-                //GetComponent<CardHover>().enabled = false;
-                //this.transform.position = new Vector3(-1 * gameBoard.sizeDelta.x / 2, 0, 0);
-                
-                // GetComponent<CardDisplay>().MoveOverTime(gameObject, GameObject.Find("GameBoard"), 1.0f);
-                // this.transform.SetParent(gameBoard.transform, false);
-                // Debug.Log("Resize.. begun");
-                // GetComponent<CardDisplay>().ResizeThisCard(2.0f);
-                // Debug.Log("Resize.. complete");
-                // GetComponent<CardDisplay>().StackOnBoard(gameObject, GameObject.Find("GameBoard"), 1.0f);
-                // Debug.Log("-----> MOVED");    
+                              
                 GetComponent<CardDisplay>().PlayCard();     
                 GameObject.Find("GameUI").GetComponent<GameUI>().UpdateBank();
                 //this.enabled = false;

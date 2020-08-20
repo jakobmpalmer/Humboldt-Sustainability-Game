@@ -15,9 +15,9 @@ MonoBehaviour:
   cardName: Solar
   cardType: 3
   price: 490000000
+  savesInMil: 560
   co2e: 143000
   energy: 280000
-  saves: 0
   description: Price over 10 years. Utility ??
   secret: Residential $560 million($3,900/ton C02e) on every home. Solar farm $320
     million ($2400/ton C02e) on 1600 acres of brownfield and pasture. (CAN ONLY USE

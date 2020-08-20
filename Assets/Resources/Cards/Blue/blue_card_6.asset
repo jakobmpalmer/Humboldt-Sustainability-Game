@@ -15,9 +15,9 @@ MonoBehaviour:
   cardName: Electric Vehicles %10
   cardType: 1
   price: 26000000
+  savesInMil: 33
   co2e: 13000
   energy: 22000
-  saves: 0
   description: $812/ton C02e
   secret: 'SAVE: $33 million on fuel costs over 10 years, future savings using vehicle
     to grid as battery storage.'

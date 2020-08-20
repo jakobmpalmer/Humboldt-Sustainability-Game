@@ -15,9 +15,9 @@ MonoBehaviour:
   cardName: Composting Food Waste 1:1 with sawmill waste.
   cardType: 0
   price: 8900000
+  savesInMil: 24
   co2e: 72000
   energy: 0
-  costs: 0
   description: '72, 000 Tons: 12,000 no landfill, 35,000 no burning, 25,000 into
     soil.<newline>$123/tons C02'
   secret: Saves $19 million to ranchers, $5 million no landfill.

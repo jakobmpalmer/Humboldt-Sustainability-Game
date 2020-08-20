@@ -15,8 +15,8 @@ MonoBehaviour:
   cardName: Free Frequent Buses
   cardType: 1
   price: 70000000
+  savesInMil: 140
   co2e: 114000
   energy: 1000
-  saves: 0
   description: $60/ton C02e
-  secret: Saves 140 million on car travel, health costs, and job opportunities.
+  secret: Saves $140 million on car travel, health costs, and job opportunities.

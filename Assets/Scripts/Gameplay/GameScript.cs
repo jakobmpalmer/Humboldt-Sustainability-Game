@@ -33,9 +33,12 @@ public class GameScript : MonoBehaviour
     public GameObject bankArea;
 
     //bool DEBUG = true;
-    public int energy;
+    public float energy;
 
     public float currentCo2e;
+
+    public float roundSavings;
+    public float energySavings;
 
     public float winningCo2e = 590000;
     public float climateFund;
@@ -44,30 +47,54 @@ public class GameScript : MonoBehaviour
 
     public int roundNum;
 
-    // Start is called before the first frame update
+    public GameObject gameTimer;
+    public GameObject roundCanvas;
+    TimerScript timerScript;
+    bool allCardsLoaded;
+
     void Start()
     {
         climateFund = 10000000f;
+        roundSavings = 0f;
+        energySavings = 0f;
         roundNum = 1;
+        allCardsLoaded = false;
         //(DEBUG) : Debug.Log("") ? "NO DEBUG";
         currentCo2e = 590000f;
-        gameUI = gameUIObject.GetComponent<GameUI>();
-        gameUI.UpdateCo2e();
-        gameUI.UpdateBank();
+        
         //DrawCards(mainCanvas.transform, 2);
         playerDeck = new List<GameObject>();
-        LoadResources();
-        Debug.Log("Resources Loaded");
+        //LoadResources();
         players = GameObject.Find("Players");
+        currentPlayer = players.transform.GetChild(0).gameObject;
         playersList = new GameObject[numPlayers];
         for (int i = 0; i < numPlayers; i++)
         {
             playersList[i] = players.transform.GetChild(i).gameObject;            
             //bankArea.transform.GetChild(i).GetComponent<Text>().text = playersList[i].GetComponent<PlayerScript>().name;
         }
-        currentPlayer = playersList[0];        
+        Debug.Log("Setting currentplayer..");
+        currentPlayer = playersList[0];      
+        Debug.Log("Set currentplayer!");  
         currentPlayer.GetComponent<PlayerScript>().canPlay = true;
-        nextPlayerNum = 1;        
+        nextPlayerNum = 1;     
+
+        LoadGreenBlue();
+        Debug.Log("Resources Loaded");
+
+
+        gameUI = gameUIObject.GetComponent<GameUI>();
+        gameUI.UpdateCo2e();
+        gameUI.UpdateBank();
+        
+        
+
+
+        // DrawCards(currentPlayer.transform, 3);
+        // //GameObject.Find("Timer").GetComponent<TimerScript>().ChangeTimer();
+        timerScript = gameTimer.GetComponent<TimerScript>();
+        // timerScript.ChangeTimer();
+        // Debug.Log("Timer Begun");   
     }
 
     // Update is called once per frame
@@ -84,40 +111,32 @@ public class GameScript : MonoBehaviour
 
 //Invoked on button click
     public void DrawCards(Transform newParent, int num){
+
+        if(cardDeck.Count <= 0){
+          if(!allCardsLoaded){
+            LoadOrangePink();
+            allCardsLoaded = true;
+          } else {
+              Debug.Log("out of cards!!");
+              return;
+          }
+            
+        } 
+
+        if(currentPlayer == null){
+            currentPlayer = players.transform.GetChild(0).gameObject;
+        }
+
+
         for (int i = 0; i < num; i++)
         {
             //New Card choice
-            int rand = Random.Range(0, cardDeck.Count);
+            int rand = Random.Range(0, cardDeck.Count - 1);
             Debug.Log("your random: " + rand);
             
             cardPrefab = Instantiate(cardTemplate, new Vector3(i * 200.0F, i * -25, 0), Quaternion.identity);
             cardPrefab.transform.SetParent(newParent, false); // Parents card to gameUI to make it visible on spawn.
-            //cardPrefab.transform.SetParent(currentPlayer.transform.GetChild(0), true);
-            // cardPrefab.GetComponent<CardDisplay>().card = cardObject;
-            if(roundNum == 1){
-            // if(dealing){
-                // if((cardDeck[rand].price <= cardPriceMax) || (cardDeck[rand].energy > 0)){
-                // if(cardDeck[rand].cardType != 0){
-                if((cardDeck[rand].cardType != 0) || (cardDeck[rand].cardType != 1)){
-                    int k = 0;
-                    Debug.Log("Must reroll.. " + cardDeck[rand].cardType);
-                    // while((cardDeck[rand].price <= cardPriceMax) && (cardDeck[rand].energy > 0)){
-                    while((cardDeck[rand].cardType != 0) || (cardDeck[rand].cardType != 1)){
-                        rand = Random.Range(0, cardDeck.Count);
-                        if((cardDeck[rand].cardType == 0) || (cardDeck[rand].cardType == 1))
-                        { 
-                            Debug.Log("->Found it!: " + cardDeck[rand].cardType);
-                            break; 
-                        }
-                        if (k == 50) { 
-                            Debug.Log("-->Cant do it! moving on.. ");
-                            break; 
-                        }
-                        k++;
-                    }
-                    Debug.Log("Worked! with, " + rand);
-                }
-            }
+            
             cardPrefab.GetComponent<CardDisplay>().card = cardDeck[rand];
             cardPrefab.GetComponent<CardDisplay>().nameText = cardPrefab.GetComponentsInChildren<Text>()[0];
             cardPrefab.GetComponent<CardDisplay>().descriptionText = cardPrefab.GetComponentsInChildren<Text>()[2];
@@ -150,18 +169,8 @@ public class GameScript : MonoBehaviour
                 destRow = GameObject.Find("DeckRowThree");
                 Debug.Log("ELSE CardDeckCount: " + currentDeckSize);
             }
-
-            // cardPrefab.GetComponent<CardDisplay>().MoveAndStack(cardPrefab, playerArea, playerDeck.Count);
             cardPrefab.GetComponent<CardDisplay>().MoveAndStack(cardPrefab, destRow, currentDeckSize);
-
-            // if(playerDeck.Count == 1){                
-            //     cardPrefab.transform.position.x = -345;
-            // } else {
-            //     cardPrefab.transform.position.x = playerDeck[playerDeck.Count - 1].transform.position.x + 100;
-            // }
-            
-
-        }
+        }   
     }
 
     void DrawDotiverse(){
@@ -207,20 +216,32 @@ public class GameScript : MonoBehaviour
             cardDeck.Add(card);
         }
         //Debug.Log("Count after pink: " + count);
-
-
     }
 
+    void LoadGreenBlue(){
+        object[] greenCards = Resources.LoadAll(("Cards/Green"), typeof(Card));
+        object[] blueCards = Resources.LoadAll(("Cards/Blue"), typeof(Card));
 
+        foreach (Card card in greenCards){
+            cardDeck.Add(card);
+        }
 
-    public void ShowErrorMessage(string message, float overTime){
-        IEnumerator coroutine = SlideMessage(message, GameObject.Find("ErrorMessage"), GameObject.Find("ErrorDestination"), overTime);
-        StartCoroutine(coroutine);
+        foreach (Card card in blueCards){
+            cardDeck.Add(card);
+        }
     }
 
-    public void ShowSlideMessage(string message, string msgObj, string dest, float overTime){
-        IEnumerator coroutine = SlideMessage(message, GameObject.Find(msgObj), GameObject.Find(dest), overTime);
-        StartCoroutine(coroutine);
+    void LoadOrangePink(){
+        object[] orangeCards = Resources.LoadAll(("Cards/Orange"), typeof(Card));
+        object[] pinkCards = Resources.LoadAll(("Cards/Pink"), typeof(Card));
+
+        foreach (Card card in orangeCards){
+            cardDeck.Add(card);
+        }
+
+        foreach (Card card in pinkCards){
+            cardDeck.Add(card);
+        }
     }
 
     public void EndTurn(){
@@ -242,6 +263,35 @@ public class GameScript : MonoBehaviour
         StartCoroutine(playerTurnCoroutine);
     }
 
+
+//         ShowSlideMessage(currentPlayer.name + "'s Turn!", "PlayerTurnTitle", "PlayerTitleDest", 1.0f);
+//         IEnumerator playerTurnCoroutine = ShowPlayerTurn(2);
+//         StartCoroutine(playerTurnCoroutine);
+    public void ShowErrorMessage(string message, float overTime){
+        IEnumerator coroutine = SlideMessage(message, GameObject.Find("ErrorMessage"), GameObject.Find("ErrorDestination"), overTime);
+        StartCoroutine(coroutine);
+    }
+
+    public void ShowSlideMessage(string message, string msgObj, string dest, float overTime){
+        IEnumerator coroutine = SlideMessage(message, GameObject.Find(msgObj), GameObject.Find(dest), overTime);
+        StartCoroutine(coroutine);
+    }
+
+    
+
+    public void NextRound(){
+        roundCanvas.SetActive(true); 
+        roundCanvas.GetComponent<RoundScript>().SetRoundInfo(roundSavings, roundNum, energySavings);
+        energy += energySavings;
+        climateFund += roundSavings;
+        timerScript.paused = true;
+        //timerScript.SetTime(240f);
+    }
+
+    public void EndRound(){
+        timerScript.SetTime(3f);
+    }
+
     IEnumerator ShowPlayerTurn(float showFor)
     //IEnumerator MoveObject(GameObject source, GameObject destination, float overTime, int numCards)
     {
@@ -259,6 +309,9 @@ public class GameScript : MonoBehaviour
 
 
     IEnumerator SlideMessage(string message, GameObject messageObj, GameObject target, float overTime){
+        messageObj.GetComponent<Image>().enabled = true;
+        messageObj.GetComponentInChildren<Text>().enabled = true;
+        //messageObj.SetActive(true);
         //Vector3 destPos = destination.transform.position;
         Vector3 sourcePos = messageObj.GetComponent<RectTransform>().position;
         messageObj.GetComponentInChildren<Text>().text = message;
@@ -271,15 +324,17 @@ public class GameScript : MonoBehaviour
             yield return null;
         }
         yield return new WaitForSeconds(1);
-        startTime = Time.time;
-        while(Time.time < startTime + overTime)
-        {            
-            messageObj.transform.position = Vector3.Lerp(messageObj.GetComponent<RectTransform>().position, sourcePos, (Time.time - startTime)/overTime);
-            yield return null;
-        }
+        // startTime = Time.time;
+        // while(Time.time < startTime + overTime)
+        // {            
+        //     messageObj.transform.position = Vector3.Lerp(messageObj.GetComponent<RectTransform>().position, sourcePos, (Time.time - startTime)/overTime);
+        //     yield return null;
+        // }
 
-        
-        messageObj.transform.position = sourcePos;
+        //messageObj.SetActive(false);
+        messageObj.GetComponent<Image>().enabled = false;
+        messageObj.GetComponentInChildren<Text>().enabled = false;
+        //messageObj.transform.position = sourcePos;
         Debug.Log("DoNE");
 
     }

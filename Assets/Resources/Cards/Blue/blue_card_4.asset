@@ -15,8 +15,8 @@ MonoBehaviour:
   cardName: Walk/Bike Short Trips
   cardType: 1
   price: 58000000
+  savesInMil: 241
   co2e: 128000
   energy: 0
-  saves: 0
   description: $542/ton C02e.
   secret: 'SAVES: $241 million; prevents obesity, diabetes, heart disease.'

@@ -27,21 +27,33 @@ public class GameUI : MonoBehaviour
 
     public Text Co2eDisplay;
     public Text climateActionFund;
+    public Text energyFund;
+    
     int turnNum;
+    bool showingSecret;
+
+    public GameObject flipInspectorButton;
 
     public void Start(){
-        turnNum = 1;
-        //gameMaster = GameObject.Find("GameMaster");        
+        showingSecret = false;
+        turnNum = 1;       
         gameScript = gameMaster.GetComponent<GameScript>();
         gameTimer = GameObject.Find("Timer");
-        // Button btn = this.GetComponent<Button>();
+        
         Button btn = GameObject.Find("DrawBtn").GetComponent<Button>();
-        nextTurnButton = GameObject.Find("EndTurnBtn").GetComponent<Button>();
-        Button pausePlayerBtn = GameObject.Find("PlayBtn").GetComponent<Button>();
         btn.onClick.AddListener(DrawCards);
+
+        nextTurnButton = GameObject.Find("EndTurnBtn").GetComponent<Button>();
         nextTurnButton.onClick.AddListener(EndTurn);
+        
+        Button pausePlayerBtn = GameObject.Find("PlayBtn").GetComponent<Button>();
         pausePlayerBtn.onClick.AddListener(PausePlay);
 
+        Button endRoundBtn = GameObject.Find("EndRoundBtn").GetComponent<Button>();
+        endRoundBtn.onClick.AddListener(gameScript.EndRound);
+                
+        Button flipInspectorBtn = flipInspectorButton.GetComponent<Button>();
+        flipInspectorBtn.onClick.AddListener(FlipInspector);
     }
 
     void DealCards(int numCards){
@@ -124,6 +136,34 @@ public class GameUI : MonoBehaviour
 
     public void UpdateBank(){        
         climateActionFund.text = gameScript.climateFund.ToString("c");
+        energyFund.text = gameScript.energy + " MWh";
+    }
+
+    // public void OnPointerClick(PointerEventData eventData) {
+    //     if (eventData.name == Inspec) {
+    //         FlipCard();
+    //     }
+    // }
+
+    public void FlipInspector(){        
+        GameObject currentCard = GameObject.Find("GameBoard").GetComponent<GameBoardScript>().currentCard;
+        if(!showingSecret){
+            inspectContent.text = currentCard.GetComponent<CardDisplay>().cardDescription;
+            inspectTitle.enabled = true;
+            inspectPrice.enabled = true;
+            inspectEnergy.enabled = true;
+            showingSecret = true;
+        } else {
+            inspectContent.text = currentCard.GetComponent<CardDisplay>().cardSecret;
+            inspectTitle.enabled = false;
+            inspectPrice.enabled = false;
+            inspectEnergy.enabled = false;
+            showingSecret = false;
+        }
+    }
+
+    public void SetSecretStatus(bool secretStatus){
+        showingSecret = secretStatus;
     }
 
 }
