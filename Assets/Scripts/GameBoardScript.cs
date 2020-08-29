@@ -9,9 +9,12 @@ public class GameBoardScript : MonoBehaviour
     [SerializeField] GameObject gameboardBorder;
     public GameObject currentCard;
     public GameObject lastPlayed;
+    public bool cardStacked;
     // Start is called before the first frame update
     void Start()
     {
+        cardStacked = true;
+        Debug.Log("Card is stacked!!");
         //currentCard = GameObject.Find("firstCard");
         currentCard = null;
         lastPlayed = GameObject.Find("FirstCardSpot");

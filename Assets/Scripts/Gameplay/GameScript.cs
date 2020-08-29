@@ -49,6 +49,7 @@ public class GameScript : MonoBehaviour
 
     public GameObject gameTimer;
     public GameObject roundCanvas;
+    public GameObject nextRoundPanel;
     TimerScript timerScript;
     bool allCardsLoaded;
 
@@ -120,7 +121,6 @@ public class GameScript : MonoBehaviour
               Debug.Log("out of cards!!");
               return;
           }
-            
         } 
 
         if(currentPlayer == null){
@@ -171,14 +171,6 @@ public class GameScript : MonoBehaviour
             }
             cardPrefab.GetComponent<CardDisplay>().MoveAndStack(cardPrefab, destRow, currentDeckSize);
         }   
-    }
-
-    void DrawDotiverse(){
-
-    }
-
-    void DrawDontiverse(){
-
     }
 
     public void ReduceCo2e(float reduction){
@@ -280,7 +272,10 @@ public class GameScript : MonoBehaviour
     
 
     public void NextRound(){
+        roundNum++;
+        
         roundCanvas.SetActive(true); 
+        nextRoundPanel.SetActive(true);
         roundCanvas.GetComponent<RoundScript>().SetRoundInfo(roundSavings, roundNum, energySavings);
         energy += energySavings;
         climateFund += roundSavings;

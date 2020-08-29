@@ -78,7 +78,7 @@ public class GameUI : MonoBehaviour
 
     void EndTurn(){
         gameScript.EndTurn();
-        UpdateTurnDisplay();
+        //UpdateTurnDisplay();
         if(turnNum < gameScript.numPlayers){DealCards(3);}
         turnNum++;
     }

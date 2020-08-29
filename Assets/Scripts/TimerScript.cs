@@ -17,6 +17,7 @@ public class TimerScript : MonoBehaviour
 
     public GameObject gameMaster;
     GameScript gameScript;
+    public bool endOfRound;
 
     [SerializeField] Text countdownText;
     void Start()
@@ -54,8 +55,11 @@ public class TimerScript : MonoBehaviour
             minutes = "00";
             seconds = "00";
             timesUp = true;
-            gameScript.NextRound();
-            countdownText.color = Color.red;
+            if(!endOfRound){
+                gameScript.NextRound();
+                endOfRound = true;
+            }
+            countdownText.color = Color.red;            
         } else if(currentTime <= 30){
             countdownText.color = Color.yellow;
         } else {

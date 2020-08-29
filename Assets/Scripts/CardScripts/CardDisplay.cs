@@ -22,12 +22,15 @@ public class CardDisplay : MonoBehaviour
     public string cardDescription;
     public GameObject gameMaster;
     GameScript gameScript;
-    GameBoardScript gameBoardScpt;
+    public GameBoardScript gameBoardScpt;
+
     GameObject gameBoard;
     // Start is called before the first frame update
     void Start()
     {
         gameBoard = GameObject.Find("GameBoard");
+        gameBoardScpt = gameBoard.GetComponent<GameBoardScript>();
+        Debug.Log("-->> " + gameBoardScpt.cardStacked);
         //energyText = GameObject.Find("InspectorEnergy").GetComponent<Text>();
         cardPrice = card.price;
         cardSavings = (card.savesInMil * 1000000f );
@@ -123,7 +126,7 @@ public class CardDisplay : MonoBehaviour
     }
 
     public void PlayCard(){        
-        gameBoardScpt = gameBoard.GetComponent<GameBoardScript>();
+        
         ResizeThisCard(3.0f);
         //MoveOverTime(gameObject, gameBoardScpt.lastPlayed, 3.0f);
         this.transform.SetParent(gameBoard.transform, false);
@@ -196,6 +199,7 @@ public class CardDisplay : MonoBehaviour
     IEnumerator MoveObject(GameObject source, GameObject playerArea, float overTime)
     //IEnumerator MoveObject(GameObject source, GameObject destination, float overTime, int numCards)
     {
+        
         //Vector3 destPos = destination.transform.position;
         Vector3 sourcePos = source.GetComponent<RectTransform>().position;
         
@@ -213,24 +217,39 @@ public class CardDisplay : MonoBehaviour
 
     IEnumerator BoardStack(GameObject source, GameObject boardArea, float overTime)
     {
+
+        gameBoardScpt = GameObject.Find("GameBoard").GetComponent<GameBoardScript>();
+        Debug.Log(gameBoardScpt.cardStacked + " attempting card stacked");
+        while(gameBoardScpt.cardStacked == false){ //Check if other card is stacking
+            yield return 1f;
+            Debug.Log(gameBoardScpt.cardStacked + " <- ll");
+            Debug.Log("waiting");
+        }
+
+        
+        gameBoardScpt.cardStacked = false;
         Vector3 sourcePos = source.GetComponent<RectTransform>().position;
         gameBoardScpt = gameBoard.GetComponent<GameBoardScript>();
         
         yield return new WaitForSeconds(2);
         float startTime = Time.time;
+
+        Vector3 destLocation = new Vector3( gameBoardScpt.lastPlayed.GetComponent<RectTransform>().localPosition.x + (gameBoardScpt.lastPlayed.GetComponent<RectTransform>().rect.width) + (source.GetComponent<RectTransform>().rect.width / 2),
+                                            gameBoardScpt.lastPlayed.GetComponent<RectTransform>().localPosition.y,// - (gameBoardScpt.lastPlayed.GetComponent<RectTransform>().rect.width),
+                                            gameBoardScpt.lastPlayed.GetComponent<RectTransform>().localPosition.z);
+
         while(Time.time < startTime + overTime)
         { 
             //Debug.Log(source.GetComponent<RectTransform>().position.x + ", " + source.GetComponent<RectTransform>().position.y +  ") going to, (" + gameBoardScpt.lastPlayed.GetComponent<RectTransform>().position.x + ", " + gameBoardScpt.lastPlayed.GetComponent<RectTransform>().position.y);
             //Debug.Log("Width:SizeDelta, " + gameBoardScpt.lastPlayed.GetComponent<RectTransform>().rect.width + " :: " + gameBoardScpt.lastPlayed.GetComponent<RectTransform>().sizeDelta.x);
             source.transform.localPosition = Vector3.Lerp(source.GetComponent<RectTransform>().localPosition,
-                                                        new Vector3(
-                                                                //boardArea.transform.position.x,
-                                                                gameBoardScpt.lastPlayed.GetComponent<RectTransform>().localPosition.x + (gameBoardScpt.lastPlayed.GetComponent<RectTransform>().rect.width) + (source.GetComponent<RectTransform>().rect.width / 2),
-                                                                gameBoardScpt.lastPlayed.GetComponent<RectTransform>().localPosition.y,// - (gameBoardScpt.lastPlayed.GetComponent<RectTransform>().rect.width),
-                                                                gameBoardScpt.lastPlayed.GetComponent<RectTransform>().localPosition.z),
+                                                        destLocation,
                                                                 // boardArea.transform.position.y,
                                                                 // boardArea.transform.position.z), 
                                                                 (Time.time - startTime)/overTime);
+
+            Debug.Log("DestLoc: (" + destLocation.x + ", " + destLocation.y + ", " + destLocation.z + ")");
+
             yield return null;
         }
         //source.transform.position = boardArea.transform.position;
@@ -238,6 +257,7 @@ public class CardDisplay : MonoBehaviour
 
         gameBoardScpt.lastPlayed = gameBoardScpt.currentCard;
         gameBoardScpt.currentCard = null;
+        gameBoardScpt.cardStacked = true;
     }
 
 

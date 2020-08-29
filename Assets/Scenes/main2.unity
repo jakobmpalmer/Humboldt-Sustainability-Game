@@ -579,6 +579,8 @@ MonoBehaviour:
   universeDisplays: {fileID: 1732121617}
   roundsCanva: {fileID: 80148250}
   gameTimer: {fileID: 654468503}
+  doniverseDeck: []
+  dontiverseDeck: []
 --- !u!61 &80148256
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -645,7 +647,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 258.5, y: -72.75}
+  m_AnchoredPosition: {x: 258, y: -73}
   m_SizeDelta: {x: 516.85376, y: 145.47339}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &82927660
@@ -2426,7 +2428,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -164.51, y: 0}
+  m_AnchoredPosition: {x: -171.46, y: 0}
   m_SizeDelta: {x: 49.528534, y: 39.759995}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &556328982
@@ -2982,7 +2984,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -317.09998, y: 45}
+  m_AnchoredPosition: {x: -317, y: 45}
   m_SizeDelta: {x: 208.85242, y: 91.40344}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &654468505
@@ -3004,6 +3006,7 @@ MonoBehaviour:
   minutes: 
   seconds: 
   gameMaster: {fileID: 1068848198}
+  endOfRound: 0
   countdownText: {fileID: 1342596355}
 --- !u!114 &654468506
 MonoBehaviour:
@@ -4873,6 +4876,7 @@ MonoBehaviour:
   gameboardBorder: {fileID: 588350039}
   currentCard: {fileID: 0}
   lastPlayed: {fileID: 0}
+  cardStacked: 0
 --- !u!61 &1012851130
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -5274,6 +5278,7 @@ MonoBehaviour:
   roundNum: 0
   gameTimer: {fileID: 654468503}
   roundCanvas: {fileID: 80148250}
+  nextRoundPanel: {fileID: 1871386556}
 --- !u!4 &1068848200
 Transform:
   m_ObjectHideFlags: 0
@@ -9557,7 +9562,7 @@ PrefabInstance:
     - target: {fileID: 4515086550592782782, guid: 4076b820625f7924eaaa84ac47561172,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 168.75
+      value: 169
       objectReference: {fileID: 0}
     - target: {fileID: 4515086550592782782, guid: 4076b820625f7924eaaa84ac47561172,
         type: 3}
