@@ -29,6 +29,8 @@ public class GameSetup : MonoBehaviour
     public Text moderatorTitle;
     public Text moderatorInput;
 
+    public GameObject roundsCanvas;
+
 
 
 
@@ -151,12 +153,12 @@ public class GameSetup : MonoBehaviour
     }
 
     void SubmitBtn(){     
-         //Debug.Log("About to setup player names")    ;
-         namesSet = SetPlayerNames();
-         if(!namesSet){
-            Debug.Log("Error with a name. Please try again.");
-            return;
-         }
+        //  namesSet = SetPlayerNames();
+        //  if(!namesSet){
+        //     Debug.Log("Error with a name. Please try again.");
+        //     return;
+        //  }
+
          //Debug.Log("Set Player Names Complete.");
          //GetComponent<GameScript>().enabled = (true);
          namingPanel.SetActive(false);
@@ -165,8 +167,8 @@ public class GameSetup : MonoBehaviour
          //Debug.Log("Set setup canva false Complete.");
         // GetComponent<GameScript>().DrawCards(GetComponent<GameScript>().playersList[0].transform, 3);        
         GetComponent<GameScript>().DrawCards(GameObject.Find("Players").transform.GetChild(0).transform, 3);
-        GameObject.Find("Timer").GetComponent<TimerScript>().ChangeTimer();
-        //Debug.Log("Timer Begun");  
+        roundsCanvas.SetActive(true);
+        //GameObject.Find("Timer").GetComponent<TimerScript>().ChangeTimer();
         this.enabled = false;
     }
 

@@ -25,6 +25,8 @@ public class RoundScript : MonoBehaviour
     public object[] doniverseCards, dontiverseCards;
     public List<UniverseCard> doniverseDeck, dontiverseDeck;
 
+    public Text timerRoundTitle;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -60,6 +62,7 @@ public class RoundScript : MonoBehaviour
         Debug.Log("energy save");
         energySavingText.text = "Energy Saved: " + energySave + " MWh";
         roundText.text = "Round " + (num);
+        timerRoundTitle.text = "Round " + num + " Timer";
     }
 
     // Update is called once per frame
@@ -81,12 +84,17 @@ public class RoundScript : MonoBehaviour
             nextRoundPanel.SetActive(false);
             SetUniverseCards();
             universeDisplays.SetActive(true);
+            timerScript.SetTime(240f);
+            
+            // gameScript.EndTurn();
+            // gameUIScript.turnNum = 1;
+            
             roundShowing = false;
         } else {
             gameUIScript.UpdateBank();
             universeDisplays.SetActive(false);
-            roundsCanva.SetActive(false);
-            timerScript.SetTime(240f);
+            roundsCanva.SetActive(false);            
+            timerScript.TimerPlay();
             timerScript.endOfRound = false;
             roundShowing = true;
         }

@@ -29,7 +29,7 @@ public class GameUI : MonoBehaviour
     public Text climateActionFund;
     public Text energyFund;
     
-    int turnNum;
+    public int turnNum;
     bool showingSecret;
 
     public GameObject flipInspectorButton;
@@ -40,8 +40,8 @@ public class GameUI : MonoBehaviour
         gameScript = gameMaster.GetComponent<GameScript>();
         gameTimer = GameObject.Find("Timer");
         
-        Button btn = GameObject.Find("DrawBtn").GetComponent<Button>();
-        btn.onClick.AddListener(DrawCards);
+        // Button btn = GameObject.Find("DrawBtn").GetComponent<Button>();
+        // btn.onClick.AddListener(DrawCards);
 
         nextTurnButton = GameObject.Find("EndTurnBtn").GetComponent<Button>();
         nextTurnButton.onClick.AddListener(EndTurn);
@@ -61,25 +61,29 @@ public class GameUI : MonoBehaviour
         gameScript.DrawCards(this.transform, numCards);
     }
 
-    void DrawCards(){
+    // void DrawCards(){
             
-            string buttonName = this.name;
-            Debug.Log ("You have clicked the " + buttonName + " button!");
-            if(gameScript.cardDeck.Count >= 0){
-                gameScript.DrawCards(this.transform, 1);
+    //         string buttonName = this.name;
+    //         Debug.Log ("You have clicked the " + buttonName + " button!");
+    //         if(gameScript.cardDeck.Count >= 0){
+    //             gameScript.DrawCards(this.transform, 1);
 
-                //gameScript.currentPlayer.GetComponent<PlayerScript>().DrawCards(this.transform, 1);
-                Debug.Log("Drew Cards...");
-                nextTurnButton.interactable = false;  
-            } else {
-                Debug.Log("Out of cards! &*");
-            }
-	}
+    //             //gameScript.currentPlayer.GetComponent<PlayerScript>().DrawCards(this.transform, 1);
+    //             Debug.Log("Drew Cards...");
+    //             nextTurnButton.interactable = false;  
+    //         } else {
+    //             Debug.Log("Out of cards! &*");
+    //         }
+	// }
 
     void EndTurn(){
         gameScript.EndTurn();
         //UpdateTurnDisplay();
-        if(turnNum < gameScript.numPlayers){DealCards(3);}
+        int numCards = (gameScript.roundNum == 1) ? 3 : 1;
+
+        if(turnNum < gameScript.numPlayers){
+            DealCards(numCards);
+        }
         turnNum++;
     }
 

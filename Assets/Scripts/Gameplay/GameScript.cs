@@ -18,7 +18,7 @@ public class GameScript : MonoBehaviour
 
     public GameObject playerArea;
 
-    public List<GameObject> playerDeck;
+    //public List<GameObject> playerDeck;
 
     public int numPlayers;
 
@@ -62,9 +62,9 @@ public class GameScript : MonoBehaviour
         allCardsLoaded = false;
         //(DEBUG) : Debug.Log("") ? "NO DEBUG";
         currentCo2e = 590000f;
-        
+        roundCanvas.GetComponent<RoundScript>().SetRoundInfo(0f, roundNum, 0f);
         //DrawCards(mainCanvas.transform, 2);
-        playerDeck = new List<GameObject>();
+        //playerDeck = new List<GameObject>();
         //LoadResources();
         players = GameObject.Find("Players");
         currentPlayer = players.transform.GetChild(0).gameObject;
@@ -113,7 +113,7 @@ public class GameScript : MonoBehaviour
 //Invoked on button click
     public void DrawCards(Transform newParent, int num){
 
-        if(cardDeck.Count <= 0){
+        if(cardDeck.Count <= 1){
           if(!allCardsLoaded){
             LoadOrangePink();
             allCardsLoaded = true;
@@ -247,8 +247,7 @@ public class GameScript : MonoBehaviour
             nextPlayerNum++;
         }
         Debug.Log("Next Player num " + nextPlayerNum);
-
-
+        
         //GameObject.Find("GameMaster").GetComponent<GameScript>().ShowErrorMessage("Not Enough Resources!", 1.0f);        
         ShowSlideMessage(currentPlayer.name + "'s Turn!", "PlayerTurnTitle", "PlayerTitleDest", 1.0f);
         IEnumerator playerTurnCoroutine = ShowPlayerTurn(2);

@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: pink_card_2
   m_EditorClassIdentifier: 
   cardName: Hot Water Heat Pumps
-  cardType: 0
+  cardType: 2
   price: 14700000
+  savesInMil: 0
   co2e: 68000
   energy: 65000
-  costs: 0
   description: 68,000 Tons ($216/ton CO2e)
   secret: Save   switching from propane     $29 million<newline>Cost   switching
     from natural gas    $61 million.

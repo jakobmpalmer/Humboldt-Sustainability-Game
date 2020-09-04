@@ -22,14 +22,14 @@ public class TimerScript : MonoBehaviour
     [SerializeField] Text countdownText;
     void Start()
     {
-        paused = false;
+        paused = true;
         currentTime = startingTime;
         gameScript = gameMaster.GetComponent<GameScript>();
     }
 
     void Update()
     {
-        timeIncrement = paused ? 1 : 0;
+        timeIncrement = paused ? 0 : 1;
         //currentTime -= 1 * Time.deltaTime;
         currentTime -= timeIncrement * Time.deltaTime;
         
@@ -59,6 +59,7 @@ public class TimerScript : MonoBehaviour
                 gameScript.NextRound();
                 endOfRound = true;
             }
+            GameObject.Find("GameUI").GetComponent<GameUI>().turnNum = 0;
             countdownText.color = Color.red;            
         } else if(currentTime <= 30){
             countdownText.color = Color.yellow;
@@ -71,6 +72,14 @@ public class TimerScript : MonoBehaviour
 
     public void ChangeTimer(){
         paused = paused ? false : true;
+    }
+
+    public void TimerPlay(){
+        paused = false;
+    }
+
+    public void TimerPause(){
+        paused = true;
     }
 
     public void SetTime(float setTime){
