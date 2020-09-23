@@ -125,14 +125,21 @@ public class CardDisplay : MonoBehaviour
         //GetComponentInParent<PlayerScript>().money -= cardPrice;
     }
 
-    public void PlayCard(){        
-        
-        ResizeThisCard(3.0f);
-        //MoveOverTime(gameObject, gameBoardScpt.lastPlayed, 3.0f);
-        this.transform.SetParent(gameBoard.transform, false);
-        StackOnBoard(gameObject, gameBoardScpt.lastPlayed, 1.0f);
-        gameScript.ReduceCo2e(card.co2e);
-        //Debug.Log("Reduced by " + card.co2e);
+    public void PlayCard(){     
+        gameBoardScpt = GameObject.Find("GameBoard").GetComponent<GameBoardScript>();   
+        if(gameBoardScpt.cardStacked){
+            gameBoardScpt.cardStacked = false;
+            ResizeThisCard(3.0f);
+            //MoveOverTime(gameObject, gameBoardScpt.lastPlayed, 3.0f);
+            this.transform.SetParent(gameBoard.transform, false);
+            StackOnBoard(gameObject, gameBoardScpt.lastPlayed, 1.0f);
+            gameScript.ReduceCo2e(card.co2e);
+            gameScript.AddCardToRoundDeck(this.gameObject);
+            //Debug.Log("Reduced by " + card.co2e);
+        } else {
+            Debug.Log("Problem!Problem!");
+            this.transform.position = GetComponent<CardHover>().startingPos;
+        }
     }
 
 
@@ -218,23 +225,23 @@ public class CardDisplay : MonoBehaviour
     IEnumerator BoardStack(GameObject source, GameObject boardArea, float overTime)
     {
 
-        gameBoardScpt = GameObject.Find("GameBoard").GetComponent<GameBoardScript>();
-        Debug.Log(gameBoardScpt.cardStacked + " attempting card stacked");
-        while(gameBoardScpt.cardStacked == false){ //Check if other card is stacking
-            yield return 1f;
-            Debug.Log(gameBoardScpt.cardStacked + " <- ll");
-            Debug.Log("waiting");
-        }
+        // gameBoardScpt = GameObject.Find("GameBoard").GetComponent<GameBoardScript>();
+        // Debug.Log(gameBoardScpt.cardStacked + " attempting card stacked");
+        // while(gameBoardScpt.cardStacked == false){ //Check if other card is stacking
+        //     yield return 1f;
+        //     Debug.Log(gameBoardScpt.cardStacked + " <- ll");
+        //     Debug.Log("waiting");
+        // }
 
         
-        gameBoardScpt.cardStacked = false;
+        // gameBoardScpt.cardStacked = false;
         Vector3 sourcePos = source.GetComponent<RectTransform>().position;
         gameBoardScpt = gameBoard.GetComponent<GameBoardScript>();
         
         yield return new WaitForSeconds(2);
         float startTime = Time.time;
 
-        Vector3 destLocation = new Vector3( gameBoardScpt.lastPlayed.GetComponent<RectTransform>().localPosition.x + (gameBoardScpt.lastPlayed.GetComponent<RectTransform>().rect.width) + (source.GetComponent<RectTransform>().rect.width / 2),
+        Vector3 destLocation = new Vector3( gameBoardScpt.lastPlayed.GetComponent<RectTransform>().localPosition.x + (gameBoardScpt.lastPlayed.GetComponent<RectTransform>().rect.width),// + (source.GetComponent<RectTransform>().rect.width / 2),
                                             gameBoardScpt.lastPlayed.GetComponent<RectTransform>().localPosition.y,// - (gameBoardScpt.lastPlayed.GetComponent<RectTransform>().rect.width),
                                             gameBoardScpt.lastPlayed.GetComponent<RectTransform>().localPosition.z);
 
@@ -254,7 +261,7 @@ public class CardDisplay : MonoBehaviour
         }
         //source.transform.position = boardArea.transform.position;
         //source.transform.position = gameBoardScpt.lastPlayed.transform.position;
-
+        source.GetComponent<CardHover>().DestroyScript();
         gameBoardScpt.lastPlayed = gameBoardScpt.currentCard;
         gameBoardScpt.currentCard = null;
         gameBoardScpt.cardStacked = true;

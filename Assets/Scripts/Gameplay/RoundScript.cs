@@ -16,8 +16,9 @@ public class RoundScript : MonoBehaviour
 
     public GameObject nextRoundPanel;
     public GameObject universeDisplays;
+    public GameObject cardsPlayedPanel;
     public GameObject roundsCanva;
-    bool roundShowing;
+    bool roundShowing, cardsShowing;
 
     public GameObject gameTimer;
     TimerScript timerScript;
@@ -26,6 +27,12 @@ public class RoundScript : MonoBehaviour
     public List<UniverseCard> doniverseDeck, dontiverseDeck;
 
     public Text timerRoundTitle;
+
+    public GameObject[] roundsCards;
+
+    public bool cardsLeft;
+
+    public GameObject moneyCardSpawn, noCardsText;
 
     // Start is called before the first frame update
     void Start()
@@ -52,6 +59,12 @@ public class RoundScript : MonoBehaviour
         Debug.Log("DoniverseCards:" + doCount);
         Debug.Log("DontiverseCards:" + dontCount);
         
+    }
+
+    public void GetRoundCards(){
+        roundsCards = new GameObject[gameScript.thisRoundsCards.Count];
+        gameScript.thisRoundsCards.CopyTo(roundsCards);
+        gameScript.ResetRoundDeck();
     }
 
     public void SetRoundInfo(float moneySave, int num, float energySave){
@@ -81,15 +94,26 @@ public class RoundScript : MonoBehaviour
         Debug.Log("Clicked Round Panel!");
 
         if(roundShowing){
-            nextRoundPanel.SetActive(false);
+            nextRoundPanel.SetActive(false);            
+            cardsPlayedPanel.SetActive(true);            
+            // gameScript.EndTurn();
+            // gameUIScript.turnNum = 1;
+            GetRoundCards();
+            if(roundsCards.Length == 0){
+                noCardsText.SetActive(true);
+            } else {
+                SpawnMoneyCards();
+            }
+            roundShowing = false;
+            cardsShowing = true;
+        } else if(cardsShowing){
+        // } else if(cardsShowing && cardsLeft){
+            cardsPlayedPanel.SetActive(false);
+            noCardsText.SetActive(false);
             SetUniverseCards();
             universeDisplays.SetActive(true);
             timerScript.SetTime(240f);
-            
-            // gameScript.EndTurn();
-            // gameUIScript.turnNum = 1;
-            
-            roundShowing = false;
+            cardsShowing = false;
         } else {
             gameUIScript.UpdateBank();
             universeDisplays.SetActive(false);
@@ -122,6 +146,31 @@ public class RoundScript : MonoBehaviour
 
         dontTitle.text = "Year " + dontiverseDeck[gameScript.roundNum - 1].year.ToString();
         dontContent.text = dontiverseDeck[gameScript.roundNum - 1].content.Replace("<newline>", "\n\n");
+    }
+
+    public void SpawnMoneyCards(){
+        int j = 0;
+        for(int i = 0; i < roundsCards.Length; i++){   
+
+            if(i == 3 || i == 7){
+                j++;
+            }   
+            
+            GameObject cardPrefab = Instantiate(gameScript.cardTemplate, new Vector3(moneyCardSpawn.GetComponent<RectTransform>().anchoredPosition.x + ((i * gameScript.cardTemplate.GetComponent<RectTransform>().sizeDelta.x) + 50), 
+                                                                                        moneyCardSpawn.GetComponent<RectTransform>().anchoredPosition.y - (j * gameScript.cardTemplate.GetComponent<RectTransform>().sizeDelta.y),
+                                                                                        0), Quaternion.identity);
+                                    Debug.Log("Spawning Money cards @: " + moneyCardSpawn.GetComponent<RectTransform>().anchoredPosition.x + ", " + moneyCardSpawn.GetComponent<RectTransform>().anchoredPosition.y);
+            cardPrefab.transform.SetParent(cardsPlayedPanel.transform, false); // Parents card to gameUI to make it visible on spawn.
+            
+            cardPrefab.GetComponent<CardDisplay>().card = roundsCards[i].GetComponent<CardDisplay>().card;
+            cardPrefab.GetComponent<CardDisplay>().nameText = cardPrefab.GetComponentsInChildren<Text>()[0];
+            cardPrefab.GetComponent<CardDisplay>().descriptionText = cardPrefab.GetComponentsInChildren<Text>()[2];
+            cardPrefab.GetComponent<CardDisplay>().priceText = cardPrefab.GetComponentsInChildren<Text>()[1];
+            cardPrefab.GetComponent<CardDisplay>().energyText = cardPrefab.GetComponentsInChildren<Text>()[3];
+            
+            Destroy(cardPrefab.GetComponent<CardHover>());
+            cardPrefab.AddComponent<MoneyHover>();
+        }
     }
 
 

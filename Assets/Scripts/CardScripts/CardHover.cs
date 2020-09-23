@@ -105,7 +105,7 @@ public class CardHover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
                 GameObject.Find("GameUI").GetComponent<GameUI>().UpdateBank();
                 //this.enabled = false;
                 GetComponent<RectTransform>().localScale = new Vector3(1f, 1f, 0f);
-                Destroy(this);
+                //Destroy(this);
                 Debug.Log("THIS SHOULD NEVER PRINT. Enabled = false");
             } else {
                 Debug.Log("Cannot play...");
@@ -120,6 +120,10 @@ public class CardHover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 
     public void OnDrop(PointerEventData eventData){
         
+    }
+
+    public void DestroyScript(){
+        Destroy(this);
     }
 
 

@@ -153,11 +153,11 @@ public class GameSetup : MonoBehaviour
     }
 
     void SubmitBtn(){     
-        //  namesSet = SetPlayerNames();
-        //  if(!namesSet){
-        //     Debug.Log("Error with a name. Please try again.");
-        //     return;
-        //  }
+         namesSet = SetPlayerNames();
+         if(!namesSet){
+            Debug.Log("Error with a name. Please try again.");
+            return;
+         }
 
          //Debug.Log("Set Player Names Complete.");
          //GetComponent<GameScript>().enabled = (true);
@@ -193,6 +193,8 @@ public class GameSetup : MonoBehaviour
         }                        
     }
 
+/* This script is responsible for spawning the 
+    Input fields for the player entries.*/
     void GetPlayerNames(int num){
         float yOff = (playerEntry.GetComponent<RectTransform>().rect.height + 25) * namingPanel.GetComponentInParent<Canvas>().transform.localScale.y; ///2 + 25;//* namingPanel.GetComponentInParent<Canvas>().transform.localScale.y / 2;
         //float yOff = namingPanel.GetComponentInParent<Canvas>().transform.localScale.y / num;
@@ -209,13 +211,7 @@ public class GameSetup : MonoBehaviour
         GameObject columnOne = GameObject.Find("InputColumnOne");
         GameObject columnTwo = GameObject.Find("InputColumnTwo");
         for (int i = 0; i < num; i++)
-        {           
-                //xOff = namingPanel.transform.GetChild(0).GetComponent<RectTransform>().rect.width / 4;
-            
-                //xOff = -1 * namingPanel.transform.GetChild(0).GetComponent<RectTransform>().rect.width / 4;
-            
-            
-
+        {                          
             if(offset){
                 if(i > 4){
                     //spawnLoc = new Vector3(namingPanel.transform.position.x + xOff, namingPanel.transform.position.y+ 85 + (yOff * j), namingPanel.transform.position.z);
@@ -231,7 +227,6 @@ public class GameSetup : MonoBehaviour
                     spawnLoc = new Vector3(columnOne.transform.position.x, columnOne.transform.position.y - (yOff * i), columnOne.transform.position.z);
                     //j++;
                 }
-
             } else {
                 spawnLoc = new Vector3(namingPanel.transform.position.x, namingPanel.transform.position.y+ 85 - (yOff * i), namingPanel.transform.position.z);
             }
@@ -240,13 +235,15 @@ public class GameSetup : MonoBehaviour
             int k = i+1;
             //player = Instantiate(playerEntry, spawnLoc, Quaternion.identity, namingPanel.transform);
             player = Instantiate(playerEntry, spawnLoc, Quaternion.identity, sessionNames.transform);
-            player.GetComponentInChildren<Text>().text = "Player " + k + ": ";            
+            player.GetComponentInChildren<Text>().text = "Player " + k;                        
         }
 
     }
 
-    bool SetPlayerNames(){
 
+/* This script is responsible for Setting the 
+    player entries to the input field values */
+    bool SetPlayerNames(){
         
         int xOffset = 0;
         int j = 0;
@@ -256,10 +253,11 @@ public class GameSetup : MonoBehaviour
         Debug.Log("Got player Names.. " + playerNames.Length);
 
         if(playerNames.Length > 4){
-            // bankArea.GetComponent<RectTransform>().sizeDelta = new Vector2(400, 138);
-            // bankArea.transform.localPosition = new Vector2(bankArea.transform.localPosition.x -100 ,bankArea.transform.localPosition.y);
+            bankArea.GetComponent<RectTransform>().sizeDelta = new Vector2(400, 138); // Doubles bank area size **
+            bankArea.transform.localPosition = new Vector2(bankArea.transform.localPosition.x -100, bankArea.transform.localPosition.y);
+
             playerEntriesArea.GetComponent<RectTransform>().sizeDelta = new Vector2(400, 138);
-            playerEntriesArea.transform.localPosition = new Vector2(playerEntriesArea.transform.localPosition.x -100 ,playerEntriesArea.transform.localPosition.y);
+            playerEntriesArea.transform.localPosition = new Vector2(playerEntriesArea.transform.localPosition.x ,playerEntriesArea.transform.localPosition.y);
         }
 
         Transform textSpawnPos = GameObject.Find("PlayerTextSpawn").transform;
@@ -285,13 +283,16 @@ public class GameSetup : MonoBehaviour
                  //Parent to the panel
                 //   playerTextObj.transform.SetParent(bankArea.transform, false);
                 playerTextObj.transform.SetParent(playerEntriesArea.transform, false);
-                playerTextObj.text = playerTextObj.name;
+                playerTextObj.text = playerTextObj.name + " !";
+                Debug.Log("PTO.name " + playerNames[i].text);
                   //Set the text box's text element font size and style:
                    //playerTextObj.fontSize = defaultFontSize;
                    //Set the text box's text element to the current textToDisplay:
                    //playerTextObj.text = players[i].name + ": " + players[i].GetComponent<PlayerScript>().money.ToString("c");
             //bankArea.transform.GetChild(i).GetComponent<Text>().text = players[i].name + ": " + players[i].GetComponent<PlayerScript>().money;
         }
+
+        
         moderatorTitle.text = "Moderator: " + moderatorInput.text;
         return true;
     }

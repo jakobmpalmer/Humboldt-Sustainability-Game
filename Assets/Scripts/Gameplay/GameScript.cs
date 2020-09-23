@@ -53,6 +53,8 @@ public class GameScript : MonoBehaviour
     TimerScript timerScript;
     bool allCardsLoaded;
 
+    public List<GameObject> thisRoundsCards;
+
     void Start()
     {
         climateFund = 10000000f;
@@ -270,6 +272,15 @@ public class GameScript : MonoBehaviour
 
     
 
+
+
+    public void AddCardToRoundDeck(GameObject theCard){
+        thisRoundsCards.Add(theCard);
+    }
+    public void ResetRoundDeck(){
+        thisRoundsCards.Clear();
+    }
+
     public void NextRound(){
         roundNum++;
         
@@ -281,6 +292,7 @@ public class GameScript : MonoBehaviour
         timerScript.paused = true;
         //timerScript.SetTime(240f);
     }
+    
 
     public void EndRound(){
         timerScript.SetTime(3f);

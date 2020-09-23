@@ -149,8 +149,14 @@ public class GameUI : MonoBehaviour
     //     }
     // }
 
-    public void FlipInspector(){        
+    public void FlipInspector(){                
+
         GameObject currentCard = GameObject.Find("GameBoard").GetComponent<GameBoardScript>().currentCard;
+        if(currentCard == null) {
+            Debug.Log("currentCard = Nnull");
+            return;
+        }
+
         if(!showingSecret){
             inspectContent.text = currentCard.GetComponent<CardDisplay>().cardDescription;
             inspectTitle.enabled = true;
